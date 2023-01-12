@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
+import Login from "./login";
+import { Container } from "../styles/home";
 
 export default function Home() {
   return (
-    <>
+    <Container>
       <Head>
         <title>Home page</title>
       </Head>
-
-      <div>
-        <h1>Hello World</h1>
-      </div>
-    </>
+      <Login />
+      <h1>Home</h1>
+    </Container>
   );
 }
