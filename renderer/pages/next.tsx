@@ -1,23 +1,13 @@
-import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
+import React from "react";
+import Head from "next/head";
 
-function Next() {
+export default function Next() {
   return (
-    <React.Fragment>
+    <>
       <Head>
-        <title>Next - Nextron (with-typescript)</title>
+        <title>Next</title>
       </Head>
-      <div>
-        <p>
-          ⚡ Electron + Next.js ⚡ -
-          <Link href="/home">
-            <a>Go to home page</a>
-          </Link>
-        </p>
-      </div>
-    </React.Fragment>
+      <h1>Next page</h1>
+    </>
   );
-};
-
-export default Next;
+}
