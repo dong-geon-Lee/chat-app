@@ -14,7 +14,7 @@ export default function Home() {
   if (!user) return <Login />;
 
   return (
-    <Container>
+    <Container priority={true}>
       <Head>
         <Title>Home page</Title>
       </Head>

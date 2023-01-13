@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import img from "../public/images/star.jpg";
 import Spinner from "../components/Spinner/Spinner";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -68,12 +67,20 @@ export default function Register() {
   }
 
   return (
-    <Container>
+    <Container priority={true}>
       <Head>
         <Title>Home page</Title>
       </Head>
 
-      <Image src={img} alt="back" objectFit="cover" layout="fill" priority />
+      <Image
+        src={
+          "https://user-images.githubusercontent.com/69576865/212247453-68a59c52-4349-4964-a993-636b66724fb0.jpg"
+        }
+        alt="back"
+        objectFit="cover"
+        layout="fill"
+        priority={true}
+      />
       <Form onSubmit={handleRegister}>
         <Text>계정 만들기</Text>
         <AuthBox>

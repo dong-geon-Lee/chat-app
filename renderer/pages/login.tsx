@@ -51,7 +51,7 @@ export default function Login() {
   }
 
   return (
-    <Container>
+    <Container priority={true}>
       <Head>
         <Title>Home page</Title>
       </Head>
