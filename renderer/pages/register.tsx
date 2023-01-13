@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import img from "../public/images/star.jpg";
+import Spinner from "../components/Spinner/Spinner";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { auth } from "../config/firebase";
@@ -52,7 +53,10 @@ export default function Register() {
 
     await createUserWithEmailAndPassword(email, password);
     await updateProfile({ displayName: name });
-    router.push("login");
+
+    setTimeout(() => {
+      router.push("login");
+    }, 1500);
   };
 
   const onChange = (e: any) => {
@@ -60,7 +64,7 @@ export default function Register() {
   };
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <Spinner />;
   }
 
   return (
@@ -68,8 +72,8 @@ export default function Register() {
       <Head>
         <Title>Home page</Title>
       </Head>
-      <Image src={img} alt="back" objectFit="cover" layout="fill" priority />
 
+      <Image src={img} alt="back" objectFit="cover" layout="fill" priority />
       <Form onSubmit={handleRegister}>
         <Text>계정 만들기</Text>
         <AuthBox>

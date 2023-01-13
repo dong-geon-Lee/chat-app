@@ -16,12 +16,10 @@ import img from "../public/images/star.jpg";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import {
-  useAuthState,
-  useSignInWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Spinner from "../components/Spinner/Spinner";
 
 export default function Login() {
   const [userInput, setUserInput] = useState({
@@ -30,21 +28,27 @@ export default function Login() {
   });
 
   const { email, password } = userInput;
-  const [user] = useAuthState(auth);
-  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, loading]: any =
+    useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
   const handleSignIn = (e: any) => {
     e.preventDefault();
 
     signInWithEmailAndPassword(email, password);
-    console.log(user);
-    router.push("/home");
+
+    setTimeout(() => {
+      router.push("/home");
+    }, 1500);
   };
 
   const onChange = (e: any) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <Container>

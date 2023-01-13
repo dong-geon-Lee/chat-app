@@ -1,10 +1,12 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  background-color: beige;
-  position: relative;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("https://user-images.githubusercontent.com/69576865/212247453-68a59c52-4349-4964-a993-636b66724fb0.jpg");
 `;
 
 export const Title = styled.title``;
