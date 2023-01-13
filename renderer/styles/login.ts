@@ -5,6 +5,12 @@ export const Container = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+
+  & .google__btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
 `;
 
 export const Form = styled.form`
@@ -21,7 +27,9 @@ export const Form = styled.form`
   width: 50rem;
 `;
 
-export const Title = styled.h1`
+export const Title = styled.title``;
+
+export const Text = styled.h1`
   font-size: 2.2rem;
   font-weight: 800;
   color: #fff;

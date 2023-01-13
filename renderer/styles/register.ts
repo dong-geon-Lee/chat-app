@@ -7,6 +7,8 @@ export const Container = styled.div`
   height: 100vh;
 `;
 
+export const Title = styled.title``;
+
 export const Form = styled.form`
   position: absolute;
   top: 50%;
@@ -21,7 +23,7 @@ export const Form = styled.form`
   width: 50rem;
 `;
 
-export const Title = styled.h1`
+export const Text = styled.h1`
   font-size: 2.2rem;
   font-weight: 800;
   color: #fff;
@@ -55,7 +57,7 @@ export const Input = styled.input`
 export const Box = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 `;
 
 export const Button = styled.button`
@@ -68,8 +70,13 @@ export const Button = styled.button`
   margin: 0 0 1.2rem 0;
   transition: background-color 0.3s ease;
 
-  & a {
-    color: #fff;
+  & + button {
+    background-color: #e5e5e5;
+    color: #000;
+
+    &:hover {
+      background-color: #edf6f9;
+    }
   }
 
   &:hover {
