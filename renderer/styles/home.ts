@@ -17,7 +17,7 @@ export const Button = styled.button``;
 
 export const ChatBox = styled.div`
   display: grid;
-  grid-template-columns: 0.2fr 1fr;
+  grid-template-columns: minmax(32rem, 0.2fr) 1fr;
 `;
 
 export const Left = styled.div`
@@ -25,7 +25,7 @@ export const Left = styled.div`
   height: 100vh;
   width: 100%;
   display: grid;
-  grid-template-rows: 0.1fr 1fr 0.1fr;
+  grid-template-rows: 9rem 1fr 0.1fr;
 `;
 
 export const Header = styled.header`
@@ -38,7 +38,7 @@ export const Header = styled.header`
 
 export const Right = styled(Left)`
   background-color: #35393f;
-  grid-template-rows: 0.1fr 1.5fr 0.18fr;
+  grid-template-rows: 9rem 1.5fr 0.13fr;
 `;
 
 export const Main = styled.main`
@@ -77,11 +77,38 @@ export const ChatRoom = styled.div`
     background-color: #35393f;
     cursor: pointer;
   }
+
+  &:hover img {
+    opacity: 1;
+  }
 `;
 
 export const TextChat = styled.p`
   font-size: 1.8rem;
   font-weight: 500;
+`;
+
+export const IconsBox = styled.div`
+  display: flex;
+  gap: 1.2rem;
+  margin-left: auto;
+
+  & img {
+    opacity: 0;
+  }
+`;
+
+export const IconImg = styled.img`
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d2d2d2;
+    transform: scale(1.35);
+  }
 `;
 
 export const Strong = styled.h1`
@@ -105,6 +132,7 @@ export const Footer = styled.div`
     border-radius: 50%;
     padding: 0.5rem;
     cursor: pointer;
+    display: block;
   }
 `;
 
@@ -244,7 +272,7 @@ export const ChatText = styled.p`
 
 export const DatesBox = styled.div`
   display: grid;
-  grid-template-columns: 1fr 0.2fr 1fr;
+  grid-template-columns: 1fr 11rem 1fr;
   align-items: center;
 `;
 
@@ -281,7 +309,6 @@ export const ChatDiv = styled.div`
 `;
 
 export const ChatInfo = styled.div`
-  /* display: flex; */
   width: 100%;
 `;
 

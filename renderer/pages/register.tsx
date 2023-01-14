@@ -4,7 +4,7 @@ import Link from "next/link";
 import Spinner from "../components/Spinner/Spinner";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import {
   useCreateUserWithEmailAndPassword,
   useUpdateProfile,
@@ -21,6 +21,7 @@ import {
   Text,
   Title,
 } from "../styles/register";
+import { addDoc, collection } from "firebase/firestore";
 
 export default function Register() {
   const [userInput, setUserInput] = useState({
@@ -40,22 +41,32 @@ export default function Register() {
   const handleRegister = async (e: any) => {
     e.preventDefault();
 
-    if (!email || !password || !password2) {
-      alert("이메일 또는 비밀번호를 입력해주세요");
-      return;
+    try {
+      if (!email || !password || !password2) {
+        alert("이메일 또는 비밀번호를 입력해주세요");
+        return;
+      }
+
+      if (password !== password2) {
+        alert("비밀번호가 다릅니다!");
+        return;
+      }
+
+      await addDoc(collection(db, "users"), {
+        displayName: name,
+        email,
+        password,
+      });
+
+      await createUserWithEmailAndPassword(email, password);
+      await updateProfile({ displayName: name });
+
+      setTimeout(() => {
+        router.push("login");
+      }, 1500);
+    } catch (error) {
+      console.error(error);
     }
-
-    if (password !== password2) {
-      alert("비밀번호가 다릅니다!");
-      return;
-    }
-
-    await createUserWithEmailAndPassword(email, password);
-    await updateProfile({ displayName: name });
-
-    setTimeout(() => {
-      router.push("login");
-    }, 1500);
   };
 
   const onChange = (e: any) => {

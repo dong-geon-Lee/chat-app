@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "../components/Spinner/Spinner";
 
 export default function Login() {

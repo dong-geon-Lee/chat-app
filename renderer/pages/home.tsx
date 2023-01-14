@@ -24,6 +24,8 @@ import {
   HeaderStrong,
   HeaderText,
   Headline,
+  IconImg,
+  IconsBox,
   ImgBox,
   Input,
   Left,
@@ -47,14 +49,19 @@ import {
   UserInfo,
 } from "../styles/home";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import Image from "next/image";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import { collection, doc } from "firebase/firestore";
 
 export default function Home() {
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
+  const [users] = useCollection(collection(db, "users"), {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
 
-  console.log(user);
+  console.log(users?.docs.map((doc) => console.log(doc.data())));
 
   if (!user) return <Login />;
 
@@ -103,14 +110,44 @@ export default function Home() {
               <ChatRoom>
                 <Strong>#</Strong>
                 <TextChat>과학자들의 모임</TextChat>
+                <IconsBox>
+                  <IconImg
+                    src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
+                    alt="user-add-icon"
+                  />
+                  <IconImg
+                    src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
+                    alt="chat-delete-icon"
+                  />
+                </IconsBox>
               </ChatRoom>
               <ChatRoom>
                 <Strong>#</Strong>
                 <TextChat>철학자들의 모임</TextChat>
+                <IconsBox>
+                  <IconImg
+                    src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
+                    alt="user-add-icon"
+                  />
+                  <IconImg
+                    src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
+                    alt="chat-delete-icon"
+                  />
+                </IconsBox>
               </ChatRoom>
               <ChatRoom>
                 <Strong>#</Strong>
                 <TextChat>수학자들의 모임</TextChat>
+                <IconsBox>
+                  <IconImg
+                    src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
+                    alt="user-add-icon"
+                  />
+                  <IconImg
+                    src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
+                    alt="chat-delete-icon"
+                  />
+                </IconsBox>
               </ChatRoom>
             </ContentBox>
           </Main>
@@ -202,82 +239,7 @@ export default function Home() {
               <ChatContentBox>
                 <Contents>
                   <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    src="https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
                     alt="logo"
                   />
                   <ChatInfo>
