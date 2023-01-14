@@ -59,6 +59,15 @@ export const Headline = styled.div`
   gap: 0.4rem;
 `;
 
+export const AddRoomIcon = styled.div`
+  /* width: 1.8rem;
+  height: 1.8rem;
+  object-fit: cover;
+  background-image: url("https://user-images.githubusercontent.com/69576865/212322092-25b68461-6f11-441a-9ab5-acfe27b3a83a.svg"); */
+`;
+
+export const RoomInput = styled.input``;
+
 export const ContentBox = styled.div`
   margin: 1.6rem;
   display: flex;

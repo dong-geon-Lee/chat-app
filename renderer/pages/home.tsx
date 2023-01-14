@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import Login from "./login";
 import {
+  AddRoomIcon,
   Box,
   Button,
   ChatBox,
@@ -36,6 +37,7 @@ import {
   MainContent,
   MainText,
   Right,
+  RoomInput,
   ScrollLine,
   Small,
   Strong,
@@ -51,8 +53,10 @@ import {
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
 import Image from "next/image";
-import { useCollection, useDocument } from "react-firebase-hooks/firestore";
-import { collection, doc } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
+import Overlays from "../components/Overlays/Overlays";
+import Modals from "../components/Modals/Modals";
 
 export default function Home() {
   const [user] = useAuthState(auth);
@@ -61,7 +65,19 @@ export default function Home() {
     snapshotListenOptions: { includeMetadataChanges: true },
   });
 
+  const [chatRoomName, setChatRoomName] = useState("");
+
   console.log(users?.docs.map((doc) => console.log(doc.data())));
+
+  const addChatRooms = (roomName: string) => {
+    const chatName = "";
+
+    console.log(chatName);
+  };
+
+  const onChange = (e: any) => {
+    setChatRoomName(e.target.value);
+  };
 
   if (!user) return <Login />;
 
@@ -70,7 +86,8 @@ export default function Home() {
       <Head>
         <title>Home page</title>
       </Head>
-
+      <Overlays />
+      <Modals />
       <ChatBox>
         <Left>
           <Header>
@@ -96,14 +113,22 @@ export default function Home() {
                 />
                 <Text>Text Channels</Text>
               </Headline>
-              <Image
-                src="https://user-images.githubusercontent.com/69576865/212322092-25b68461-6f11-441a-9ab5-acfe27b3a83a.svg"
-                alt="plus-icon"
-                width="18px"
-                height="18px"
-                style={{ cursor: "pointer" }}
-                onClick={() => alert("채팅룸을 만드시겠습니까?")}
-              />
+              <AddRoomIcon onClick={() => addChatRooms(chatRoomName)}>
+                <Image
+                  src="https://user-images.githubusercontent.com/69576865/212322092-25b68461-6f11-441a-9ab5-acfe27b3a83a.svg"
+                  alt="plus-icon"
+                  width="18px"
+                  height="18px"
+                  style={{ cursor: "pointer" }}
+                />
+
+                <RoomInput
+                  type="text"
+                  value={chatRoomName}
+                  onChange={onChange}
+                  hidden
+                />
+              </AddRoomIcon>
             </Box>
 
             <ContentBox>
@@ -121,6 +146,7 @@ export default function Home() {
                   />
                 </IconsBox>
               </ChatRoom>
+
               <ChatRoom>
                 <Strong>#</Strong>
                 <TextChat>철학자들의 모임</TextChat>
@@ -135,6 +161,7 @@ export default function Home() {
                   />
                 </IconsBox>
               </ChatRoom>
+
               <ChatRoom>
                 <Strong>#</Strong>
                 <TextChat>수학자들의 모임</TextChat>
@@ -240,96 +267,6 @@ export default function Home() {
                 <Contents>
                   <img
                     src="https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                    alt="logo"
-                  />
-                  <ChatInfo>
-                    <ChatDiv>
-                      <ChatName>권은혜</ChatName>
-                      <Small>오후 3:28</Small>
-                    </ChatDiv>
-                    <ChatText>저도 그렇게 생각합니다.</ChatText>
-                  </ChatInfo>
-                </Contents>
-              </ChatContentBox>
-              <ChatContentBox>
-                <Contents>
-                  <img
-                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
                     alt="logo"
                   />
                   <ChatInfo>
