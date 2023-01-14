@@ -214,6 +214,171 @@ export default function Home() {
                   </ChatInfo>
                 </Contents>
               </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>권은혜</ChatName>
+                      <Small>오후 3:28</Small>
+                    </ChatDiv>
+                    <ChatText>저도 그렇게 생각합니다.</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
             </ChatContainer>
           </ScrollLine>
 

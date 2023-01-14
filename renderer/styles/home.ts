@@ -134,6 +134,18 @@ export const TextId = styled.h1`
 
 export const ScrollLine = styled.div`
   overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 1rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #202225;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #2e3337;
+  }
 `;
 
 export const HeaderRight = styled(Header)``;
