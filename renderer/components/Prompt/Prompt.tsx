@@ -1,4 +1,7 @@
+import { addDoc, collection } from "firebase/firestore";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
+import { db } from "../../config/firebase";
 import { promptOverlayState, promptState } from "../../recoils/promptState";
 import {
   Bottom,
@@ -25,10 +28,28 @@ import {
 export default function Prompt() {
   const [, setPrompt] = useRecoilState(promptState);
   const [, setPromptOverlay] = useRecoilState(promptOverlayState);
+  const [chatRoomName, setChatRoomName] = useState("");
 
   const closePrompt = () => {
     setPrompt(false);
     setPromptOverlay(false);
+  };
+
+  const onChange = (e: any) => {
+    setChatRoomName(e.target.value);
+  };
+
+  const AddChatRoom = async () => {
+    try {
+      await addDoc(collection(db, "chatRooms"), {
+        chatRoomName,
+      });
+
+      setChatRoomName("");
+      closePrompt();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -61,13 +82,18 @@ export default function Prompt() {
 
         <Bottom>
           <TypeText>채널 이름</TypeText>
-          <ChannelInput type="text" placeholder="# 새로운 채널" />
+          <ChannelInput
+            type="text"
+            value={chatRoomName}
+            onChange={onChange}
+            placeholder="# 새로운 채널"
+          />
         </Bottom>
       </Wrapper>
 
       <Footer>
-        <CloseBtn>취소</CloseBtn>
-        <Button>채널 만들기</Button>
+        <CloseBtn onClick={closePrompt}>취소</CloseBtn>
+        <Button onClick={AddChatRoom}>채널 만들기</Button>
       </Footer>
     </Container>
   );

@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Head from "next/head";
 import Login from "./login";
 import {
-  AddRoomIcon,
   Box,
   Button,
   ChatBox,
@@ -37,7 +36,6 @@ import {
   MainContent,
   MainText,
   Right,
-  RoomInput,
   ScrollLine,
   Small,
   Strong,
@@ -66,21 +64,30 @@ import PromptOverlay from "../components/PromptOverlay/PromptOverlay";
 export default function Home() {
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
-  const [users] = useCollection(collection(db, "users"), {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
 
-  const [chatRoomName, setChatRoomName] = useState("");
+  const option = {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  };
+
+  const [users] = useCollection(collection(db, "users"), option);
+  const [chatRooms] = useCollection(collection(db, "chatRooms"), option);
+
   const [modals, setModals] = useRecoilState(modalState);
   const [prompt, setPrompt] = useRecoilState(promptState);
   const [, setOverlays] = useRecoilState(modalState);
   const [, setPromptOverlay] = useRecoilState(promptOverlayState);
 
-  console.log(users?.docs.map((doc) => console.log(doc.data())));
+  const userItems = users.docs.map((doc: any) => {
+    const id = doc.id;
+    const data = doc.data();
+    return { id, ...data };
+  });
 
-  const onChange = (e: any) => {
-    setChatRoomName(e.target.value);
-  };
+  const chatItems = chatRooms?.docs.map((doc: any) => {
+    const id = doc.id;
+    const data = doc.data();
+    return { id, ...data };
+  });
 
   const openModals = () => {
     setModals(true);
@@ -139,71 +146,34 @@ export default function Home() {
                 />
                 <Text>Text Channels</Text>
               </Headline>
-              <AddRoomIcon>
-                <Image
-                  src="https://user-images.githubusercontent.com/69576865/212322092-25b68461-6f11-441a-9ab5-acfe27b3a83a.svg"
-                  alt="plus-icon"
-                  width="18px"
-                  height="18px"
-                  style={{ cursor: "pointer" }}
-                  onClick={openPrompt}
-                />
-
-                <RoomInput
-                  type="text"
-                  value={chatRoomName}
-                  onChange={onChange}
-                  hidden
-                />
-              </AddRoomIcon>
+              <Image
+                src="https://user-images.githubusercontent.com/69576865/212322092-25b68461-6f11-441a-9ab5-acfe27b3a83a.svg"
+                alt="plus-icon"
+                width="18px"
+                height="18px"
+                style={{ cursor: "pointer" }}
+                onClick={openPrompt}
+              />
             </Box>
 
             <ContentBox>
-              <ChatRoom>
-                <Strong>#</Strong>
-                <TextChat>과학자들의 모임</TextChat>
-                <IconsBox>
-                  <IconImg
-                    src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
-                    alt="user-add-icon"
-                    onClick={openModals}
-                  />
-                  <IconImg
-                    src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
-                    alt="chat-delete-icon"
-                  />
-                </IconsBox>
-              </ChatRoom>
-
-              <ChatRoom>
-                <Strong>#</Strong>
-                <TextChat>철학자들의 모임</TextChat>
-                <IconsBox>
-                  <IconImg
-                    src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
-                    alt="user-add-icon"
-                  />
-                  <IconImg
-                    src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
-                    alt="chat-delete-icon"
-                  />
-                </IconsBox>
-              </ChatRoom>
-
-              <ChatRoom>
-                <Strong>#</Strong>
-                <TextChat>수학자들의 모임</TextChat>
-                <IconsBox>
-                  <IconImg
-                    src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
-                    alt="user-add-icon"
-                  />
-                  <IconImg
-                    src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
-                    alt="chat-delete-icon"
-                  />
-                </IconsBox>
-              </ChatRoom>
+              {chatItems?.map((chatItem) => (
+                <ChatRoom key={chatItem.id}>
+                  <Strong>#</Strong>
+                  <TextChat>{chatItem.chatRoomName}</TextChat>
+                  <IconsBox>
+                    <IconImg
+                      src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
+                      alt="user-add-icon"
+                      onClick={openModals}
+                    />
+                    <IconImg
+                      src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
+                      alt="chat-delete-icon"
+                    />
+                  </IconsBox>
+                </ChatRoom>
+              ))}
             </ContentBox>
           </Main>
 
