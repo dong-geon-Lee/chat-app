@@ -8,6 +8,7 @@ export const Container = styled.div`
   background-color: #35393f;
   width: 58rem;
   z-index: 10;
+  border-radius: 0.6rem;
 `;
 
 export const Header = styled.div`

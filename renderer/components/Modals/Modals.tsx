@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { modalState, overlayState } from "../../recoils/ModalState";
+import { modalState, overlayState } from "../../recoils/modalState";
 import {
   AvatarBox,
   CloseX,
@@ -35,7 +35,8 @@ export default function Modals() {
           <TextBox>
             <GroupTitle>친구를 이동건 그룹으로 초대하기</GroupTitle>
             <CloseX
-              src="https://user-images.githubusercontent.com/69576865/212520617-409e6e86-1bc0-4115-984a-de5a88c872b4.svg"
+              src="https://user-images.githubusercontent.com/69576865/212525600-d0c566fe-3910-4bda-9c3a-c31b6b886f1b.svg"
+              alt="xIcons"
               onClick={closeModals}
             />
           </TextBox>

@@ -52,13 +52,16 @@ import {
 } from "../styles/home";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
-import Image from "next/image";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
+import { modalState } from "../recoils/modalState";
+import { promptOverlayState, promptState } from "../recoils/promptState";
+import { useRecoilState } from "recoil";
+import Image from "next/image";
 import Overlays from "../components/Overlays/Overlays";
 import Modals from "../components/Modals/Modals";
-import { modalState } from "../recoils/ModalState";
-import { useRecoilState } from "recoil";
+import Prompt from "../components/Prompt/Prompt";
+import PromptOverlay from "../components/PromptOverlay/PromptOverlay";
 
 export default function Home() {
   const [user] = useAuthState(auth);
@@ -69,15 +72,11 @@ export default function Home() {
 
   const [chatRoomName, setChatRoomName] = useState("");
   const [modals, setModals] = useRecoilState(modalState);
-  const [overlays, setOverlays] = useRecoilState(modalState);
+  const [prompt, setPrompt] = useRecoilState(promptState);
+  const [, setOverlays] = useRecoilState(modalState);
+  const [, setPromptOverlay] = useRecoilState(promptOverlayState);
 
   console.log(users?.docs.map((doc) => console.log(doc.data())));
-
-  const addChatRooms = (roomName: string) => {
-    const chatName = "";
-
-    console.log(chatName);
-  };
 
   const onChange = (e: any) => {
     setChatRoomName(e.target.value);
@@ -88,9 +87,12 @@ export default function Home() {
     setOverlays(true);
   };
 
-  if (!user) return <Login />;
+  const openPrompt = () => {
+    setPrompt(true);
+    setPromptOverlay(true);
+  };
 
-  console.log(modals, overlays);
+  if (!user) return <Login />;
 
   return (
     <Container priority={true}>
@@ -98,10 +100,17 @@ export default function Home() {
         <title>Home page</title>
       </Head>
 
-      {modals && overlays && (
+      {modals && (
         <>
           <Modals />
           <Overlays />
+        </>
+      )}
+
+      {prompt && (
+        <>
+          <Prompt />
+          <PromptOverlay />
         </>
       )}
 
@@ -130,13 +139,14 @@ export default function Home() {
                 />
                 <Text>Text Channels</Text>
               </Headline>
-              <AddRoomIcon onClick={() => addChatRooms(chatRoomName)}>
+              <AddRoomIcon>
                 <Image
                   src="https://user-images.githubusercontent.com/69576865/212322092-25b68461-6f11-441a-9ab5-acfe27b3a83a.svg"
                   alt="plus-icon"
                   width="18px"
                   height="18px"
                   style={{ cursor: "pointer" }}
+                  onClick={openPrompt}
                 />
 
                 <RoomInput
@@ -156,7 +166,7 @@ export default function Home() {
                   <IconImg
                     src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
                     alt="user-add-icon"
-                    onClick={() => openModals()}
+                    onClick={openModals}
                   />
                   <IconImg
                     src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"

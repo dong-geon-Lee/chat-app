@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { modalState } from "../../recoils/ModalState";
+import { modalState } from "../../recoils/modalState";
 import { Container } from "./styles";
 
 export default function Overlays() {
