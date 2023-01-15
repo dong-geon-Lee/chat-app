@@ -16,6 +16,12 @@ export const Header = styled.header`
   border-bottom: 1px solid #000;
 `;
 
+export const IconBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+`;
+
 export const TextName = styled.h1`
   color: #fff;
 `;

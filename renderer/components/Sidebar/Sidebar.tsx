@@ -14,6 +14,7 @@ import {
   Footer,
   Header,
   Headline,
+  IconBox,
   IconImg,
   IconsBox,
   Left,
@@ -51,19 +52,21 @@ export default function Sidebar() {
     return { id, ...data };
   });
 
+  const handleHome = () => {
+    router.push("/home");
+  };
+
   const handleLogout = () => {
     router.push("/login");
     signOut();
   };
 
   const openModals = () => {
-    console.log("모달 클릭!");
     setModals(true);
     setOverlays(true);
   };
 
   const openPrompt = () => {
-    console.log("프롬 클릭!");
     setPrompt(true);
     setPromptOverlay(true);
   };
@@ -73,7 +76,6 @@ export default function Sidebar() {
   };
 
   const InChatRoom = (id: string) => {
-    console.log(router);
     router.push(`/chats/${id}`);
   };
 
@@ -81,14 +83,24 @@ export default function Sidebar() {
     <Left>
       <Header>
         <TextName>{user?.displayName}</TextName>
-        <Image
-          src="https://user-images.githubusercontent.com/69576865/212306697-97d9bea3-1c39-490b-abfe-d40f7118aeb8.svg"
-          alt="logout"
-          width="26px"
-          height="26px"
-          onClick={handleLogout}
-          style={{ cursor: "pointer" }}
-        />
+        <IconBox>
+          <Image
+            src="https://user-images.githubusercontent.com/69576865/212540134-ac8b8eb9-f38c-4b06-8aa7-5a949fc403db.svg"
+            alt="home"
+            width="26px"
+            height="26px"
+            onClick={handleHome}
+            style={{ cursor: "pointer" }}
+          />
+          <Image
+            src="https://user-images.githubusercontent.com/69576865/212540226-681d536d-2c20-4e30-8dd5-3134ab23a1e4.svg"
+            alt="logout"
+            width="26px"
+            height="26px"
+            onClick={handleLogout}
+            style={{ cursor: "pointer" }}
+          />
+        </IconBox>
       </Header>
 
       <Main>
@@ -113,7 +125,7 @@ export default function Sidebar() {
         </Box>
 
         <ContentBox>
-          {chatItems?.map((chatItem) => (
+          {chatItems?.slice().map((chatItem) => (
             <ChatRoom key={chatItem.id}>
               <Strong>#</Strong>
               <TextChat onClick={() => InChatRoom(chatItem.id)}>
