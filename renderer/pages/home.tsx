@@ -51,7 +51,7 @@ import {
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { collection } from "firebase/firestore";
+import { collection, deleteDoc, doc } from "firebase/firestore";
 import { modalState } from "../recoils/modalState";
 import { promptOverlayState, promptState } from "../recoils/promptState";
 import { useRecoilState } from "recoil";
@@ -60,10 +60,14 @@ import Overlays from "../components/Overlays/Overlays";
 import Modals from "../components/Modals/Modals";
 import Prompt from "../components/Prompt/Prompt";
 import PromptOverlay from "../components/PromptOverlay/PromptOverlay";
+import Chats from "./chats/[id]";
+import { useRouter } from "next/router";
+import Sidebar from "../components/Sidebar/Sidebar";
 
 export default function Home() {
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
+  const router = useRouter();
 
   const option = {
     snapshotListenOptions: { includeMetadataChanges: true },
@@ -77,11 +81,11 @@ export default function Home() {
   const [, setOverlays] = useRecoilState(modalState);
   const [, setPromptOverlay] = useRecoilState(promptOverlayState);
 
-  const userItems = users.docs.map((doc: any) => {
-    const id = doc.id;
-    const data = doc.data();
-    return { id, ...data };
-  });
+  // const userItems = users.docs.map((doc: any) => {
+  //   const id = doc.id;
+  //   const data = doc.data();
+  //   return { id, ...data };
+  // });
 
   const chatItems = chatRooms?.docs.map((doc: any) => {
     const id = doc.id;
@@ -97,6 +101,15 @@ export default function Home() {
   const openPrompt = () => {
     setPrompt(true);
     setPromptOverlay(true);
+  };
+
+  const removeChatRoom = async (id: string) => {
+    await deleteDoc(doc(db, "chatRooms", id));
+  };
+
+  const InChatRoom = (id: string) => {
+    console.log(router);
+    router.push(`/chats/${id}`);
   };
 
   if (!user) return <Login />;
@@ -121,8 +134,8 @@ export default function Home() {
         </>
       )}
 
-      <ChatBox>
-        <Left>
+      {/* <ChatBox> */}
+      {/* <Left>
           <Header>
             <TextName>{user.displayName}</TextName>
             <Image
@@ -160,7 +173,9 @@ export default function Home() {
               {chatItems?.map((chatItem) => (
                 <ChatRoom key={chatItem.id}>
                   <Strong>#</Strong>
-                  <TextChat>{chatItem.chatRoomName}</TextChat>
+                  <TextChat onClick={() => InChatRoom(chatItem.id)}>
+                    {chatItem.chatRoomName}
+                  </TextChat>
                   <IconsBox>
                     <IconImg
                       src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
@@ -170,6 +185,7 @@ export default function Home() {
                     <IconImg
                       src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
                       alt="chat-delete-icon"
+                      onClick={() => removeChatRoom(chatItem.id)}
                     />
                   </IconsBox>
                 </ChatRoom>
@@ -190,9 +206,8 @@ export default function Home() {
               </TextBox>
             </UserInfo>
           </Footer>
-        </Left>
-
-        <Right>
+        </Left> */}
+      {/* <Right>
           <HeaderRight>
             <HeaderBox>
               <HeaderStrong>#</HeaderStrong>
@@ -283,7 +298,12 @@ export default function Home() {
             <Input type="text" placeholder="철학자들의 모임에 메시지 보내기" />
             <Button type="submit" hidden></Button>
           </ChatForm>
-        </Right>
+        </Right> */}
+      {/* </ChatBox> */}
+
+      <ChatBox>
+        <Sidebar />
+        {/* <Chats /> */}
       </ChatBox>
     </Container>
   );
