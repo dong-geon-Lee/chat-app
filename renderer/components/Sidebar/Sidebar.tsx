@@ -57,11 +57,13 @@ export default function Sidebar() {
   };
 
   const openModals = () => {
+    console.log("모달 클릭!");
     setModals(true);
     setOverlays(true);
   };
 
   const openPrompt = () => {
+    console.log("프롬 클릭!");
     setPrompt(true);
     setPromptOverlay(true);
   };

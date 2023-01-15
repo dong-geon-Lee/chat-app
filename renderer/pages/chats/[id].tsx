@@ -2,8 +2,15 @@ import { collection } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { useRecoilState } from "recoil";
+import Modals from "../../components/Modals/Modals";
+import Overlays from "../../components/Overlays/Overlays";
+import Prompt from "../../components/Prompt/Prompt";
+import PromptOverlay from "../../components/PromptOverlay/PromptOverlay";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { db } from "../../config/firebase";
+import { modalState } from "../../recoils/modalState";
+import { promptState } from "../../recoils/promptState";
 import {
   Button,
   ChatContainer,
@@ -55,8 +62,25 @@ export default function Chats() {
 
   console.log(chatItems, "GO");
 
+  const [modals, setModals] = useRecoilState(modalState);
+  const [prompt, setPrompt] = useRecoilState(promptState);
+
   return (
     <ChatBox>
+      {modals && (
+        <>
+          <Modals />
+          <Overlays />
+        </>
+      )}
+
+      {prompt && (
+        <>
+          <Prompt />
+          <PromptOverlay />
+        </>
+      )}
+
       <Sidebar />
       <Right>
         <HeaderRight>
