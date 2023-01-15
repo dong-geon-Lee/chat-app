@@ -57,6 +57,8 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
 import Overlays from "../components/Overlays/Overlays";
 import Modals from "../components/Modals/Modals";
+import { modalState } from "../recoils/ModalState";
+import { useRecoilState } from "recoil";
 
 export default function Home() {
   const [user] = useAuthState(auth);
@@ -66,6 +68,8 @@ export default function Home() {
   });
 
   const [chatRoomName, setChatRoomName] = useState("");
+  const [modals, setModals] = useRecoilState(modalState);
+  const [overlays, setOverlays] = useRecoilState(modalState);
 
   console.log(users?.docs.map((doc) => console.log(doc.data())));
 
@@ -79,15 +83,28 @@ export default function Home() {
     setChatRoomName(e.target.value);
   };
 
+  const openModals = () => {
+    setModals(true);
+    setOverlays(true);
+  };
+
   if (!user) return <Login />;
+
+  console.log(modals, overlays);
 
   return (
     <Container priority={true}>
       <Head>
         <title>Home page</title>
       </Head>
-      <Overlays />
-      <Modals />
+
+      {modals && overlays && (
+        <>
+          <Modals />
+          <Overlays />
+        </>
+      )}
+
       <ChatBox>
         <Left>
           <Header>
@@ -139,6 +156,7 @@ export default function Home() {
                   <IconImg
                     src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
                     alt="user-add-icon"
+                    onClick={() => openModals()}
                   />
                   <IconImg
                     src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
