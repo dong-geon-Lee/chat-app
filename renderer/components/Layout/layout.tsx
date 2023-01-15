@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { Main } from "./styles";
 
 export default function Layout({ children }) {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function Layout({ children }) {
       <Head>
         <title>{pathName} page</title>
       </Head>
-      {children}
+      <Main>{children}</Main>
     </>
   );
 }

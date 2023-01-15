@@ -1,17 +1,18 @@
-import { collection } from "firebase/firestore";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { useRecoilState } from "recoil";
 import Modals from "../../components/Modals/Modals";
 import Overlays from "../../components/Overlays/Overlays";
 import Prompt from "../../components/Prompt/Prompt";
 import PromptOverlay from "../../components/PromptOverlay/PromptOverlay";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { collection } from "firebase/firestore";
+import { useRouter } from "next/router";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { useRecoilValue } from "recoil";
 import { db } from "../../config/firebase";
 import { modalState } from "../../recoils/modalState";
 import { promptState } from "../../recoils/promptState";
 import {
+  ChatBox,
   Button,
   ChatContainer,
   ChatContentBox,
@@ -38,12 +39,13 @@ import {
   Small,
   Title,
 } from "../../styles/chats";
-import { ChatBox } from "../../styles/home";
 
 export default function Chats() {
+  const modals = useRecoilValue(modalState);
+  const prompt = useRecoilValue(promptState);
+
   const router = useRouter();
   const id = router.query.id;
-  console.log(id);
 
   const option = {
     snapshotListenOptions: { includeMetadataChanges: true },
@@ -58,12 +60,6 @@ export default function Chats() {
   });
 
   const targetItem = chatItems?.find((item) => item.id === id);
-  console.log(targetItem);
-
-  console.log(chatItems, "GO");
-
-  const [modals, setModals] = useRecoilState(modalState);
-  const [prompt, setPrompt] = useRecoilState(promptState);
 
   return (
     <ChatBox>

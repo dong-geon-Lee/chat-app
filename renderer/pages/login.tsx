@@ -1,3 +1,12 @@
+import Head from "next/head";
+import Image from "next/image";
+import img from "../public/images/star.jpg";
+import Link from "next/link";
+import Spinner from "../components/Spinner/Spinner";
+import { useRouter } from "next/router";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "../config/firebase";
+import { useState } from "react";
 import {
   AuthBox,
   Box,
@@ -11,15 +20,6 @@ import {
   Title,
   Text,
 } from "../styles/login";
-import Image from "next/image";
-import img from "../public/images/star.jpg";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "../config/firebase";
-import { useState } from "react";
-import Spinner from "../components/Spinner/Spinner";
 
 export default function Login() {
   const [userInput, setUserInput] = useState({

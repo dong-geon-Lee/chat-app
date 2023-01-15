@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Login from "./login";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { ChatBox, Container } from "../styles/home";
@@ -10,10 +9,6 @@ export default function Home() {
 
   return (
     <Container priority={true}>
-      <Head>
-        <title>Home page</title>
-      </Head>
-
       {!user && <Login />}
       <ChatBox>
         <Sidebar />

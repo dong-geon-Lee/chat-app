@@ -5,6 +5,7 @@ import Spinner from "../components/Spinner/Spinner";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { auth, db } from "../config/firebase";
+import { addDoc, collection } from "firebase/firestore";
 import {
   useCreateUserWithEmailAndPassword,
   useUpdateProfile,
@@ -21,7 +22,6 @@ import {
   Text,
   Title,
 } from "../styles/register";
-import { addDoc, collection } from "firebase/firestore";
 
 export default function Register() {
   const [userInput, setUserInput] = useState({
@@ -35,7 +35,6 @@ export default function Register() {
   const [createUserWithEmailAndPassword, loading]: any =
     useCreateUserWithEmailAndPassword(auth);
   const [updateProfile] = useUpdateProfile(auth);
-
   const router = useRouter();
 
   const handleRegister = async (e: any) => {

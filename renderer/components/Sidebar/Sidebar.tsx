@@ -1,5 +1,5 @@
-import { collection, deleteDoc, doc } from "firebase/firestore";
 import Image from "next/image";
+import { collection, deleteDoc, doc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";

@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+export const ChatBox = styled.div`
+  display: grid;
+  grid-template-columns: minmax(32rem, 0.2fr) 1fr;
+`;
+
 export const Right = styled.div`
   background-color: #35393f;
   height: 100vh;
