@@ -79,8 +79,8 @@ export default function Sidebar() {
     await deleteDoc(doc(db, "chatRooms", id));
   };
 
-  const InChatRoom = (id: string) => {
-    router.push(`/chats/${id}`);
+  const InChatRoom = (id: string, chatRoom: string) => {
+    router.push({ pathname: `/chats/${id}`, query: { id, chatRoom } });
   };
 
   return (
@@ -129,10 +129,12 @@ export default function Sidebar() {
         </Box>
 
         <ContentBox>
-          {displayChatRooms?.slice()?.map((chatItem: any) => (
+          {displayChatRooms?.map((chatItem: any) => (
             <ChatRoom key={chatItem.id}>
               <Strong>#</Strong>
-              <TextChat onClick={() => InChatRoom(chatItem.id)}>
+              <TextChat
+                onClick={() => InChatRoom(chatItem.id, chatItem.chatRoomName)}
+              >
                 {chatItem.chatRoomName}
               </TextChat>
               <IconsBox>

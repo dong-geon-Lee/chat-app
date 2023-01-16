@@ -59,7 +59,7 @@ export default function Prompt() {
         timestamp: serverTimestamp(),
         hostUserId: uid,
         hostUserEmail: email,
-        chatRoomUsers: [email],
+        users: [],
       });
 
       setChatRoomName("");

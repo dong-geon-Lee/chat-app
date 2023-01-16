@@ -53,9 +53,9 @@ export const Strong = styled.strong`
 `;
 
 export const RoomText = styled.h1`
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 500;
-  line-height: 2;
+  line-height: 2.5;
   color: #b9bbbe;
 `;
 

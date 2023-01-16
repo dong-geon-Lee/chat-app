@@ -1,8 +1,11 @@
-import { collection } from "firebase/firestore";
+import { collection, doc, updateDoc } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useRecoilState } from "recoil";
 import { modalState, overlayState } from "../../recoils/modalState";
-import { db } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import {
   AvatarBox,
   CloseX,
@@ -23,25 +26,45 @@ import {
 } from "./styles";
 
 export default function Modals() {
+  const [user] = useAuthState(auth);
+  const [chatUsers, setChatUsers] = useState([]);
   const [, setModals] = useRecoilState(modalState);
   const [, setOverlays] = useRecoilState(overlayState);
+
+  const router = useRouter();
+  const chatRoomId: any = router.query.id;
 
   const option = {
     snapshotListenOptions: { includeMetadataChanges: true },
   };
 
-  const [users] = useCollection(collection(db, "users"), option);
-  const [chatRooms] = useCollection(collection(db, "chatRooms"), option);
+  const [users]: any = useCollection(collection(db, "users"), option);
+  const [chatRooms]: any = useCollection(collection(db, "chatRooms"), option);
+  const userLists = users?.docs.map((doc: any) => doc.data());
+  const chatRoomItems = chatRooms?.docs.map((doc: any) => doc.data());
 
-  const items = users?.docs.map((doc) => doc.data());
-  const chatRoomItems = chatRooms?.docs.map((doc) => doc.data());
-
-  console.log(items);
-  console.log(chatRoomItems);
+  const authUserId = user?.uid;
+  const findUser: any = userLists?.filter((x: any) => x.id === authUserId);
+  const otehrUsers: any = userLists?.filter((x: any) => x.id !== authUserId);
+  const [userInfo] = findUser || "";
 
   const closeModals = () => {
     setModals(false);
     setOverlays(false);
+  };
+
+  const addChatUser = async (addUserEmail: string, chatRoomId: string) => {
+    // if (chatUsers.includes(addUserEmail)) {
+    //   return;
+    // }
+
+    console.log(chatUsers);
+
+    const chatRef: any = doc(db, "chatRooms", chatRoomId);
+    setChatUsers((prevState: any) => [...prevState, addUserEmail]);
+    await updateDoc(chatRef, {
+      users: chatUsers,
+    });
   };
 
   return (
@@ -49,7 +72,7 @@ export default function Modals() {
       <Header>
         <HeaderInfo>
           <TextBox>
-            <GroupTitle>친구를 이동건 그룹으로 초대하기</GroupTitle>
+            <GroupTitle>친구를 {userInfo?.name} 그룹으로 초대하기</GroupTitle>
             <CloseX
               src="https://user-images.githubusercontent.com/69576865/212525600-d0c566fe-3910-4bda-9c3a-c31b6b886f1b.svg"
               alt="xIcons"
@@ -59,13 +82,13 @@ export default function Modals() {
 
           <RoomHeader>
             <Strong>#</Strong>
-            <RoomText>철학자들의 모임</RoomText>
+            <RoomText>{router.query.chatRoom}</RoomText>
           </RoomHeader>
         </HeaderInfo>
       </Header>
 
       <UserWrapper>
-        {items?.map((item: any) => (
+        {otehrUsers?.map((item: any) => (
           <UserInfoBox key={item.id}>
             <AvatarBox>
               <Img
@@ -75,7 +98,7 @@ export default function Modals() {
               <UserName>{item.name}</UserName>
             </AvatarBox>
 
-            <InviteBtn>
+            <InviteBtn onClick={() => addChatUser(item.email, chatRoomId)}>
               <InviteText>초대...</InviteText>
             </InviteBtn>
           </UserInfoBox>

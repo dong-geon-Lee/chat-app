@@ -19,7 +19,7 @@ export default function Home() {
   const modals = useRecoilValue(modalState);
 
   return (
-    <Container priority={true}>
+    <Container>
       {!user && <Login />}
 
       {modals && (
