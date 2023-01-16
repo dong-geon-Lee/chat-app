@@ -9,14 +9,26 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
 import { useRecoilValue } from "recoil";
 import { promptState } from "../recoils/promptState";
+import { modalState } from "../recoils/modalState";
+import Modals from "../components/Modals/Modals";
+import Overlays from "../components/Overlays/Overlays";
 
 export default function Home() {
   const [user] = useAuthState(auth);
   const prompt = useRecoilValue(promptState);
+  const modals = useRecoilValue(modalState);
 
   return (
     <Container priority={true}>
       {!user && <Login />}
+
+      {modals && (
+        <>
+          <Modals />
+          <Overlays />
+        </>
+      )}
+
       {prompt && (
         <>
           <Prompt />

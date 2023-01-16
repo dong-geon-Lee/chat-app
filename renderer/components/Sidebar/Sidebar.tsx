@@ -45,12 +45,16 @@ export default function Sidebar() {
   };
 
   const [chatRooms] = useCollection(collection(db, "chatRooms"), option);
+  const [users] = useCollection(collection(db, "users"), option);
 
-  const chatItems = chatRooms?.docs.map((doc: any) => {
-    const id = doc.id;
-    const data = doc.data();
-    return { id, ...data };
-  });
+  const authUserId = user?.uid;
+  const items = users?.docs.map((doc) => doc.data());
+  const findUser: any = items?.filter((x: any) => x.id === authUserId);
+  const [userInfo] = findUser || "";
+  const chatRoomItems = chatRooms?.docs.map((doc) => doc.data());
+  const displayChatRooms = chatRoomItems?.filter(
+    (chatRommItem) => chatRommItem?.hostUserId === userInfo?.id
+  );
 
   const handleHome = () => {
     router.push("/home");
@@ -82,7 +86,7 @@ export default function Sidebar() {
   return (
     <Left>
       <Header>
-        <TextName>{user?.displayName}</TextName>
+        <TextName>{userInfo?.name}</TextName>
         <IconBox>
           <Image
             src="https://user-images.githubusercontent.com/69576865/212540134-ac8b8eb9-f38c-4b06-8aa7-5a949fc403db.svg"
@@ -125,7 +129,7 @@ export default function Sidebar() {
         </Box>
 
         <ContentBox>
-          {chatItems?.slice().map((chatItem) => (
+          {displayChatRooms?.slice()?.map((chatItem: any) => (
             <ChatRoom key={chatItem.id}>
               <Strong>#</Strong>
               <TextChat onClick={() => InChatRoom(chatItem.id)}>
@@ -154,10 +158,10 @@ export default function Sidebar() {
           alt="logo"
         />
         <UserInfo>
-          <TextEmail>{user?.email}</TextEmail>
+          <TextEmail>{userInfo?.email}</TextEmail>
           <TextBox>
-            <TextId>{user?.displayName}</TextId>
-            <TextId>#00{user?.uid.length}</TextId>
+            <TextId>{userInfo?.name}</TextId>
+            <TextId>#00{userInfo?.id.length}</TextId>
           </TextBox>
         </UserInfo>
       </Footer>

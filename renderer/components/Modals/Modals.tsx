@@ -1,5 +1,8 @@
+import { collection } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import { useRecoilState } from "recoil";
 import { modalState, overlayState } from "../../recoils/modalState";
+import { db } from "../../config/firebase";
 import {
   AvatarBox,
   CloseX,
@@ -22,6 +25,19 @@ import {
 export default function Modals() {
   const [, setModals] = useRecoilState(modalState);
   const [, setOverlays] = useRecoilState(overlayState);
+
+  const option = {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  };
+
+  const [users] = useCollection(collection(db, "users"), option);
+  const [chatRooms] = useCollection(collection(db, "chatRooms"), option);
+
+  const items = users?.docs.map((doc) => doc.data());
+  const chatRoomItems = chatRooms?.docs.map((doc) => doc.data());
+
+  console.log(items);
+  console.log(chatRoomItems);
 
   const closeModals = () => {
     setModals(false);
@@ -49,58 +65,21 @@ export default function Modals() {
       </Header>
 
       <UserWrapper>
-        <UserInfoBox>
-          <AvatarBox>
-            <Img
-              src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-              alt="avatar-logo"
-            />
-            <UserName>이동수</UserName>
-          </AvatarBox>
+        {items?.map((item: any) => (
+          <UserInfoBox key={item.id}>
+            <AvatarBox>
+              <Img
+                src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+                alt="avatar-logo"
+              />
+              <UserName>{item.name}</UserName>
+            </AvatarBox>
 
-          <InviteBtn>
-            <InviteText>초대...</InviteText>
-          </InviteBtn>
-        </UserInfoBox>
-        <UserInfoBox>
-          <AvatarBox>
-            <Img
-              src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-              alt="avatar-logo"
-            />
-            <UserName>이동수</UserName>
-          </AvatarBox>
-
-          <InviteBtn>
-            <InviteText>초대...</InviteText>
-          </InviteBtn>
-        </UserInfoBox>
-        <UserInfoBox>
-          <AvatarBox>
-            <Img
-              src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-              alt="avatar-logo"
-            />
-            <UserName>이동수</UserName>
-          </AvatarBox>
-
-          <InviteBtn>
-            <InviteText>초대...</InviteText>
-          </InviteBtn>
-        </UserInfoBox>
-        <UserInfoBox>
-          <AvatarBox>
-            <Img
-              src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-              alt="avatar-logo"
-            />
-            <UserName>이동수</UserName>
-          </AvatarBox>
-
-          <InviteBtn>
-            <InviteText>초대...</InviteText>
-          </InviteBtn>
-        </UserInfoBox>
+            <InviteBtn>
+              <InviteText>초대...</InviteText>
+            </InviteBtn>
+          </UserInfoBox>
+        ))}
       </UserWrapper>
     </Container>
   );

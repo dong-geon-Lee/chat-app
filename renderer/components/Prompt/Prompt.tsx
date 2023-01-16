@@ -1,7 +1,14 @@
-import { addDoc, collection } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
-import { db } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
 import { promptOverlayState, promptState } from "../../recoils/promptState";
 import {
   Bottom,
@@ -30,6 +37,10 @@ export default function Prompt() {
   const [, setPromptOverlay] = useRecoilState(promptOverlayState);
   const [chatRoomName, setChatRoomName] = useState("");
 
+  const [user] = useAuthState(auth);
+  const { uid, email } = user;
+  console.log(user);
+
   const closePrompt = () => {
     setPrompt(false);
     setPromptOverlay(false);
@@ -41,8 +52,14 @@ export default function Prompt() {
 
   const AddChatRoom = async () => {
     try {
-      await addDoc(collection(db, "chatRooms"), {
+      const newChatRef = doc(collection(db, "chatRooms"));
+      await setDoc(newChatRef, {
+        id: newChatRef.id,
         chatRoomName,
+        timestamp: serverTimestamp(),
+        hostUserId: uid,
+        hostUserEmail: email,
+        chatRoomUsers: [email],
       });
 
       setChatRoomName("");

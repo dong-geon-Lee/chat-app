@@ -80,7 +80,7 @@ export const UserInfoBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2.4rem;
+  padding: 1rem 2.4rem;
 
   &:hover {
     background-color: #868e96;
