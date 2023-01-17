@@ -121,12 +121,10 @@ export const Footer = styled.div`
   background-color: #292b2f;
 
   & img {
-    width: 4rem;
-    height: 4rem;
+    width: 4.6rem;
+    height: 4.6rem;
     object-fit: cover;
-    background-color: #fff;
     border-radius: 50%;
-    padding: 0.5rem;
     cursor: pointer;
     display: block;
   }

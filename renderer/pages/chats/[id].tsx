@@ -4,11 +4,20 @@ import Overlays from "../../components/Overlays/Overlays";
 import Prompt from "../../components/Prompt/Prompt";
 import PromptOverlay from "../../components/PromptOverlay/PromptOverlay";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { collection } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useCollection } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 import { useRecoilValue } from "recoil";
-import { db } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
 import { modalState } from "../../recoils/modalState";
 import { promptState } from "../../recoils/promptState";
 import {
@@ -39,19 +48,37 @@ import {
   Small,
   Title,
 } from "../../styles/chats";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useState } from "react";
 
 export default function Chats() {
+  const [authUser] = useAuthState(auth);
+  const [chatInput, setChatInput] = useState<any>("");
+
   const modals = useRecoilValue(modalState);
   const prompt = useRecoilValue(promptState);
 
   const router = useRouter();
-  const id = router.query.id;
+  const id: any = router.query.id;
 
   const option = {
     snapshotListenOptions: { includeMetadataChanges: true },
   };
 
   const [chatRooms] = useCollection(collection(db, "chatRooms"), option);
+  const [messages]: any = useCollection(
+    collection(db, "chatRooms", id, "messages"),
+    option
+  );
+
+  const q = query(
+    collection(db, `chatRooms/${id}/messages`),
+    orderBy("timestamp")
+  );
+
+  const [messageItems]: any = useCollectionData(q);
+  console.log(messageItems, "변화");
+  console.log(messages, "정렬전 ");
 
   const chatItems = chatRooms?.docs.map((doc: any) => {
     const id = doc.id;
@@ -60,6 +87,39 @@ export default function Chats() {
   });
 
   const targetItem = chatItems?.find((item) => item.id === id);
+
+  const onChange = (e: any) => {
+    setChatInput(e.target.value);
+  };
+
+  const addChatMessages = async (e: any) => {
+    e.preventDefault();
+
+    setChatInput(chatInput);
+    await addDoc(collection(db, "chatRooms", id, "messages"), {
+      name: authUser.displayName,
+      email: authUser.email,
+      message: chatInput,
+      timestamp: serverTimestamp(),
+    });
+  };
+
+  const formattedDate = new Intl.DateTimeFormat("ko-KR").format(new Date());
+  const dates = formattedDate.split(".");
+  const years = dates[0] + "년";
+  const month = dates[1] + "월";
+  const days = dates[2] + "일";
+  const resultsDates = `${years}${month}${days}`;
+
+  const options: any = {
+    hour: "numeric",
+    minute: "numeric",
+    dayPeriod: "short",
+  };
+
+  const formattedTime = new Intl.DateTimeFormat("ko-KR", options).format(
+    new Date()
+  );
 
   return (
     <ChatBox>
@@ -128,29 +188,31 @@ export default function Chats() {
           <ChatContainer>
             <DatesBox>
               <Line />
-              <Small>2023년 1월 14일</Small>
+              <Small>{resultsDates}</Small>
               <Line />
             </DatesBox>
 
-            <ChatContentBox>
-              <Contents>
-                <img
-                  src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                  alt="logo"
-                />
-                <ChatInfo>
-                  <ChatDiv>
-                    <ChatName>이동건</ChatName>
-                    <Small>오후 3:28</Small>
-                  </ChatDiv>
-                  <ChatText>
-                    안녕하세요. 오늘은 정말 좋은날인거 같아요!
-                  </ChatText>
-                </ChatInfo>
-              </Contents>
-            </ChatContentBox>
+            {messageItems?.map((item: any) => (
+              <ChatContentBox>
+                <Contents>
+                  <img
+                    src={
+                      "https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
+                    }
+                    alt="logo"
+                  />
+                  <ChatInfo>
+                    <ChatDiv>
+                      <ChatName>{item.name}</ChatName>
+                      <Small>{formattedTime}</Small>
+                    </ChatDiv>
+                    <ChatText>{item.message}</ChatText>
+                  </ChatInfo>
+                </Contents>
+              </ChatContentBox>
+            ))}
 
-            <ChatContentBox>
+            {/* <ChatContentBox>
               <Contents>
                 <img
                   src="https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
@@ -164,12 +226,17 @@ export default function Chats() {
                   <ChatText>저도 그렇게 생각합니다.</ChatText>
                 </ChatInfo>
               </Contents>
-            </ChatContentBox>
+            </ChatContentBox> */}
           </ChatContainer>
         </ScrollLine>
 
-        <ChatForm>
-          <Input type="text" placeholder="철학자들의 모임에 메시지 보내기" />
+        <ChatForm onSubmit={addChatMessages}>
+          <Input
+            type="text"
+            value={chatInput}
+            onChange={onChange}
+            placeholder="철학자들의 모임에 메시지 보내기"
+          />
           <Button type="submit" hidden></Button>
         </ChatForm>
       </Right>

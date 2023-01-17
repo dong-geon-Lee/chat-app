@@ -57,7 +57,7 @@ export default function Sidebar() {
   );
 
   const shareRoomItems = chatRoomItems?.filter((x) =>
-    x.users.includes(userInfo?.email)
+    x.users?.includes(userInfo?.email)
   );
 
   console.log(chatRoomItems);
@@ -150,13 +150,13 @@ export default function Sidebar() {
                   src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
                   alt="user-add-icon"
                   onClick={openModals}
-                  hidden={chatItem.hostUserEmail !== user.email}
+                  hidden={chatItem.hostUserEmail !== user?.email}
                 />
                 <IconImg
                   src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
                   alt="chat-delete-icon"
                   onClick={() => removeChatRoom(chatItem.id)}
-                  hidden={chatItem.hostUserEmail !== user.email}
+                  hidden={chatItem.hostUserEmail !== user?.email}
                 />
               </IconsBox>
             </ChatRoom>
@@ -175,13 +175,13 @@ export default function Sidebar() {
                   src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
                   alt="user-add-icon"
                   onClick={openModals}
-                  hidden={chatItem.hostUserEmail !== user.email}
+                  hidden={chatItem.hostUserEmail !== user?.email}
                 />
                 <IconImg
                   src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
                   alt="chat-delete-icon"
                   onClick={() => removeChatRoom(chatItem.id)}
-                  hidden={chatItem.hostUserEmail !== user.email}
+                  hidden={chatItem.hostUserEmail !== user?.email}
                 />
               </IconsBox>
             </ChatRoom>
@@ -191,7 +191,9 @@ export default function Sidebar() {
 
       <Footer>
         <img
-          src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
+          src={
+            "https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
+          }
           alt="logo"
         />
         <UserInfo>
