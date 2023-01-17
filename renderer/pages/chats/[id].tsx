@@ -4,6 +4,13 @@ import Overlays from "../../components/Overlays/Overlays";
 import Prompt from "../../components/Prompt/Prompt";
 import PromptOverlay from "../../components/PromptOverlay/PromptOverlay";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { useRecoilValue } from "recoil";
+import { auth, db } from "../../config/firebase";
+import { modalState } from "../../recoils/modalState";
+import { promptState } from "../../recoils/promptState";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import {
   addDoc,
   collection,
@@ -11,15 +18,10 @@ import {
   query,
   serverTimestamp,
 } from "firebase/firestore";
-import { useRouter } from "next/router";
 import {
   useCollection,
   useCollectionData,
 } from "react-firebase-hooks/firestore";
-import { useRecoilValue } from "recoil";
-import { auth, db } from "../../config/firebase";
-import { modalState } from "../../recoils/modalState";
-import { promptState } from "../../recoils/promptState";
 import {
   ChatBox,
   Button,
@@ -48,8 +50,6 @@ import {
   Small,
   Title,
 } from "../../styles/chats";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useState } from "react";
 
 export default function Chats() {
   const [authUser] = useAuthState(auth);
@@ -66,10 +66,10 @@ export default function Chats() {
   };
 
   const [chatRooms] = useCollection(collection(db, "chatRooms"), option);
-  const [messages]: any = useCollection(
-    collection(db, "chatRooms", id, "messages"),
-    option
-  );
+  // const [messages]: any = useCollection(
+  //   collection(db, "chatRooms", id, "messages"),
+  //   option
+  // );
 
   const q = query(
     collection(db, `chatRooms/${id}/messages`),
@@ -77,8 +77,6 @@ export default function Chats() {
   );
 
   const [messageItems]: any = useCollectionData(q);
-  console.log(messageItems, "변화");
-  console.log(messages, "정렬전 ");
 
   const chatItems = chatRooms?.docs.map((doc: any) => {
     const id = doc.id;
@@ -101,7 +99,10 @@ export default function Chats() {
       email: authUser.email,
       message: chatInput,
       timestamp: serverTimestamp(),
+      avatar: authUser.photoURL,
     });
+
+    setChatInput("");
   };
 
   const formattedDate = new Intl.DateTimeFormat("ko-KR").format(new Date());
@@ -110,16 +111,6 @@ export default function Chats() {
   const month = dates[1] + "월";
   const days = dates[2] + "일";
   const resultsDates = `${years}${month}${days}`;
-
-  const options: any = {
-    hour: "numeric",
-    minute: "numeric",
-    dayPeriod: "short",
-  };
-
-  const formattedTime = new Intl.DateTimeFormat("ko-KR", options).format(
-    new Date()
-  );
 
   return (
     <ChatBox>
@@ -193,10 +184,11 @@ export default function Chats() {
             </DatesBox>
 
             {messageItems?.map((item: any) => (
-              <ChatContentBox>
+              <ChatContentBox key={item.id}>
                 <Contents>
                   <img
                     src={
+                      item.avatar ||
                       "https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
                     }
                     alt="logo"
@@ -204,29 +196,15 @@ export default function Chats() {
                   <ChatInfo>
                     <ChatDiv>
                       <ChatName>{item.name}</ChatName>
-                      <Small>{formattedTime}</Small>
+                      <Small>
+                        {item.timestamp?.toDate().toLocaleTimeString("ko-KR")}
+                      </Small>
                     </ChatDiv>
                     <ChatText>{item.message}</ChatText>
                   </ChatInfo>
                 </Contents>
               </ChatContentBox>
             ))}
-
-            {/* <ChatContentBox>
-              <Contents>
-                <img
-                  src="https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
-                  alt="logo"
-                />
-                <ChatInfo>
-                  <ChatDiv>
-                    <ChatName>권은혜</ChatName>
-                    <Small>오후 3:28</Small>
-                  </ChatDiv>
-                  <ChatText>저도 그렇게 생각합니다.</ChatText>
-                </ChatInfo>
-              </Contents>
-            </ChatContentBox> */}
           </ChatContainer>
         </ScrollLine>
 

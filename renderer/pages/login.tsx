@@ -5,8 +5,10 @@ import Link from "next/link";
 import Spinner from "../components/Spinner/Spinner";
 import { useRouter } from "next/router";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
 import { useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { collection } from "firebase/firestore";
 import {
   AuthBox,
   Box,
@@ -32,8 +34,24 @@ export default function Login() {
     useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
+  const [users] = useCollectionData(collection(db, "users"));
+
+  const check = users?.find(
+    (user) => user.email === email && user.password === password
+  );
+
   const handleSignIn = (e: any) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      alert("이메일 또는 비밀번호를 입력하세요");
+      return;
+    }
+
+    if (!check) {
+      alert("계정이 존재하지 않거나 잘못된 정보를 입력하였습니다");
+      return;
+    }
 
     signInWithEmailAndPassword(email, password);
 

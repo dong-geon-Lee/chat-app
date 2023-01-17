@@ -22,17 +22,17 @@ import {
   Text,
   Title,
 } from "../styles/register";
-import { updateProfile } from "firebase/auth";
 
 export default function Register() {
   const [userInput, setUserInput] = useState({
     name: "",
     email: "",
+    avatar: "",
     password: "",
     password2: "",
   });
 
-  const { name, email, password, password2 } = userInput;
+  const { name, email, avatar, password, password2 } = userInput;
   const [createUserWithEmailAndPassword, loading]: any =
     useCreateUserWithEmailAndPassword(auth);
 
@@ -57,7 +57,7 @@ export default function Register() {
       const user = await createUserWithEmailAndPassword(email, password);
       await updateProfile({
         displayName: name,
-        // photoURL: randomURLImg[index],
+        photoURL: avatar,
       });
 
       const id = user.user.uid;
@@ -67,6 +67,7 @@ export default function Register() {
         name,
         email,
         password,
+        avatar,
       });
 
       setTimeout(() => {
@@ -120,7 +121,17 @@ export default function Register() {
               value={name}
               name="name"
               onChange={onChange}
-              placeholder="이름을 적어주세요"
+              placeholder="이름을 입력하세요"
+            />
+          </GridBox>
+          <GridBox>
+            <Label>이미지 URL</Label>
+            <Input
+              type="text"
+              value={avatar}
+              name="avatar"
+              onChange={onChange}
+              placeholder="이미지 주소를 입력하세요"
             />
           </GridBox>
           <GridBox>

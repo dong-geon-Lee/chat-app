@@ -1,8 +1,11 @@
 import Image from "next/image";
-import { collection, deleteDoc, doc } from "firebase/firestore";
+import { collection, deleteDoc, doc, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
-import { useCollection } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 import { useRecoilState } from "recoil";
 import { auth, db } from "../../config/firebase";
 import { modalState } from "../../recoils/modalState";
@@ -39,30 +42,29 @@ export default function Sidebar() {
   const [, setPromptOverlay] = useRecoilState(promptOverlayState);
 
   const router = useRouter();
+  const id = router.query.id;
 
   const option = {
     snapshotListenOptions: { includeMetadataChanges: true },
   };
 
-  const [chatRooms] = useCollection(collection(db, "chatRooms"), option);
   const [users] = useCollection(collection(db, "users"), option);
 
   const authUserId = user?.uid;
   const items = users?.docs.map((doc) => doc.data());
   const findUser: any = items?.filter((x: any) => x.id === authUserId);
   const [userInfo] = findUser || "";
-  const chatRoomItems = chatRooms?.docs.map((doc) => doc.data());
-  const displayChatRooms = chatRoomItems?.filter(
-    (chatRommItem) => chatRommItem?.hostUserId === userInfo?.id
+
+  const q = query(collection(db, `chatRooms`), orderBy("timestamp"));
+  const [chatRoomsItem]: any = useCollectionData(q);
+
+  const displayChatRooms = chatRoomsItem?.filter(
+    (chatRommItem: any) => chatRommItem?.hostUserId === userInfo?.id
   );
 
-  const shareRoomItems = chatRoomItems?.filter((x) =>
+  const shareRoomItems = chatRoomsItem?.filter((x: any) =>
     x.users?.includes(userInfo?.email)
   );
-
-  console.log(chatRoomItems);
-  console.log(displayChatRooms);
-  console.log(shareRoomItems);
 
   const handleHome = () => {
     router.push("/home");
@@ -192,6 +194,7 @@ export default function Sidebar() {
       <Footer>
         <img
           src={
+            user?.photoURL ||
             "https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
           }
           alt="logo"
