@@ -7,6 +7,12 @@ import { useState } from "react";
 import { auth, db } from "../config/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import {
+  BACKGROUND__IMAGE,
+  LOGIN__INPUT__ERROR,
+  LOGIN__LITMIT__ERROR,
+  LOGIN__PASSWORD__ERROR,
+} from "../constants/constants";
+import {
   useCreateUserWithEmailAndPassword,
   useUpdateProfile,
 } from "react-firebase-hooks/auth";
@@ -33,24 +39,28 @@ export default function Register() {
   });
 
   const { name, email, avatar, password, password2 } = userInput;
-  const [createUserWithEmailAndPassword, loading]: any =
-    useCreateUserWithEmailAndPassword(auth);
-
-  const [updateProfile] = useUpdateProfile(auth);
-
   const router = useRouter();
 
-  const handleRegister = async (e: any) => {
+  const [createUserWithEmailAndPassword, loading] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [updateProfile] = useUpdateProfile(auth);
+
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       if (!email || !password || !password2) {
-        alert("이메일 또는 비밀번호를 입력해주세요");
+        alert(LOGIN__INPUT__ERROR);
         return;
       }
 
       if (password !== password2) {
-        alert("비밀번호가 다릅니다!");
+        alert(LOGIN__PASSWORD__ERROR);
+        return;
+      }
+
+      if (password.length < 6) {
+        alert(LOGIN__LITMIT__ERROR);
         return;
       }
 
@@ -61,7 +71,6 @@ export default function Register() {
       });
 
       const id = user.user.uid;
-
       await addDoc(collection(db, "users"), {
         id,
         name,
@@ -74,32 +83,28 @@ export default function Register() {
         router.push("login");
       }, 1500);
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   };
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
   return (
-    <Container priority={true}>
+    <Container priority>
       <Head>
         <Title>Home page</Title>
       </Head>
 
       <Image
-        src={
-          "https://user-images.githubusercontent.com/69576865/212247453-68a59c52-4349-4964-a993-636b66724fb0.jpg"
-        }
+        src={BACKGROUND__IMAGE}
         alt="back"
         objectFit="cover"
         layout="fill"
-        priority={true}
+        priority
       />
       <Form onSubmit={handleRegister}>
         <Text>계정 만들기</Text>
@@ -157,7 +162,6 @@ export default function Register() {
         </AuthBox>
         <Box>
           <Button type="submit">회원가입</Button>
-
           <Link href="/login" className="back__link">
             <Button type="button">뒤로가기</Button>
           </Link>

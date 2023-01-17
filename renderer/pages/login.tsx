@@ -10,6 +10,10 @@ import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
 import {
+  LOGIN__CHECK__ERROR,
+  LOGIN__INPUT__ERROR,
+} from "../constants/constants";
+import {
   AuthBox,
   Box,
   Button,
@@ -30,46 +34,48 @@ export default function Login() {
   });
 
   const { email, password } = userInput;
-  const [signInWithEmailAndPassword, loading]: any =
-    useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
-  const [users] = useCollectionData(collection(db, "users"));
+  const [signInWithEmailAndPassword, loading] =
+    useSignInWithEmailAndPassword(auth);
 
-  const check = users?.find(
+  const [users] = useCollectionData(collection(db, "users"));
+  const checkLogin = users?.find(
     (user) => user.email === email && user.password === password
   );
 
-  const handleSignIn = (e: any) => {
+  const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      alert("이메일 또는 비밀번호를 입력하세요");
-      return;
+    try {
+      if (!email || !password) {
+        alert(LOGIN__INPUT__ERROR);
+        return;
+      }
+
+      if (!checkLogin) {
+        alert(LOGIN__CHECK__ERROR);
+        return;
+      }
+
+      signInWithEmailAndPassword(email, password);
+
+      setTimeout(() => {
+        router.push("/home");
+      }, 1500);
+    } catch (error) {
+      throw error;
     }
-
-    if (!check) {
-      alert("계정이 존재하지 않거나 잘못된 정보를 입력하였습니다");
-      return;
-    }
-
-    signInWithEmailAndPassword(email, password);
-
-    setTimeout(() => {
-      router.push("/home");
-    }, 1500);
   };
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput({ ...userInput, [e.target.name]: e.target.value });
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
   return (
-    <Container priority={true}>
+    <Container priority>
       <Head>
         <Title>Home page</Title>
       </Head>
@@ -77,7 +83,6 @@ export default function Login() {
       <Image src={img} alt="back" objectFit="cover" layout="fill" priority />
       <Form onSubmit={handleSignIn}>
         <Text>돌아오신 것을 환영해요!</Text>
-
         <AuthBox>
           <GridBox>
             <Label>이메일</Label>
