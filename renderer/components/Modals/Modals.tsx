@@ -53,11 +53,9 @@ export default function Modals() {
 
   const addChatUser = async (addUserEmail: string, chatRoomId: string) => {
     try {
-      if (chatUsers.find((x) => x === addUserEmail)) {
-        return;
-      }
-
+      if (chatUsers.find((x) => x === addUserEmail)) return;
       setChatUsers((prevState: any) => [...prevState, addUserEmail]);
+
       const chatRef = doc(db, "chatRooms", chatRoomId);
       const list = [...chatUsers, addUserEmail];
       await updateDoc(chatRef, {

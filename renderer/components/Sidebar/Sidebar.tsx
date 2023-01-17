@@ -56,6 +56,14 @@ export default function Sidebar() {
     (chatRommItem) => chatRommItem?.hostUserId === userInfo?.id
   );
 
+  const shareRoomItems = chatRoomItems?.filter((x) =>
+    x.users.includes(userInfo?.email)
+  );
+
+  console.log(chatRoomItems);
+  console.log(displayChatRooms);
+  console.log(shareRoomItems);
+
   const handleHome = () => {
     router.push("/home");
   };
@@ -142,11 +150,38 @@ export default function Sidebar() {
                   src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
                   alt="user-add-icon"
                   onClick={openModals}
+                  hidden={chatItem.hostUserEmail !== user.email}
                 />
                 <IconImg
                   src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
                   alt="chat-delete-icon"
                   onClick={() => removeChatRoom(chatItem.id)}
+                  hidden={chatItem.hostUserEmail !== user.email}
+                />
+              </IconsBox>
+            </ChatRoom>
+          ))}
+
+          {shareRoomItems?.map((chatItem: any) => (
+            <ChatRoom key={chatItem?.id}>
+              <Strong>#</Strong>
+              <TextChat
+                onClick={() => InChatRoom(chatItem.id, chatItem.chatRoomName)}
+              >
+                {chatItem?.chatRoomName}
+              </TextChat>
+              <IconsBox>
+                <IconImg
+                  src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
+                  alt="user-add-icon"
+                  onClick={openModals}
+                  hidden={chatItem.hostUserEmail !== user.email}
+                />
+                <IconImg
+                  src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
+                  alt="chat-delete-icon"
+                  onClick={() => removeChatRoom(chatItem.id)}
+                  hidden={chatItem.hostUserEmail !== user.email}
                 />
               </IconsBox>
             </ChatRoom>
