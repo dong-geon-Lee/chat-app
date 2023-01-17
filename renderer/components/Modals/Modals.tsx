@@ -39,9 +39,7 @@ export default function Modals() {
   };
 
   const [users]: any = useCollection(collection(db, "users"), option);
-  const [chatRooms]: any = useCollection(collection(db, "chatRooms"), option);
   const userLists = users?.docs.map((doc: any) => doc.data());
-  const chatRoomItems = chatRooms?.docs.map((doc: any) => doc.data());
 
   const authUserId = user?.uid;
   const findUser: any = userLists?.filter((x: any) => x.id === authUserId);
@@ -54,17 +52,20 @@ export default function Modals() {
   };
 
   const addChatUser = async (addUserEmail: string, chatRoomId: string) => {
-    // if (chatUsers.includes(addUserEmail)) {
-    //   return;
-    // }
+    try {
+      if (chatUsers.find((x) => x === addUserEmail)) {
+        return;
+      }
 
-    console.log(chatUsers);
-
-    const chatRef: any = doc(db, "chatRooms", chatRoomId);
-    setChatUsers((prevState: any) => [...prevState, addUserEmail]);
-    await updateDoc(chatRef, {
-      users: chatUsers,
-    });
+      setChatUsers((prevState: any) => [...prevState, addUserEmail]);
+      const chatRef = doc(db, "chatRooms", chatRoomId);
+      const list = [...chatUsers, addUserEmail];
+      await updateDoc(chatRef, {
+        users: list,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
