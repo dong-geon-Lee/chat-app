@@ -13,6 +13,7 @@ import {
   findCurUser,
   findOtherUsers,
   option,
+  selectedChatRoom,
 } from "../../helpers/utils";
 import {
   AvatarBox,
@@ -40,6 +41,7 @@ export default function Modals() {
 
   const [user] = useAuthState(auth);
   const authUserId = user?.uid;
+
   const router = useRouter();
   const chatRoomId = router.query.id as string;
 
@@ -48,8 +50,7 @@ export default function Modals() {
   const otherUsers = findOtherUsers(userLists, authUserId);
 
   const [chatRoom] = useCollectionData(collection(db, "chatRooms"), option);
-  const [chatRoomPath] =
-    chatRoom?.filter((chatRoom) => chatRoom.id === chatRoomId) || [];
+  const [chatRoomPath] = selectedChatRoom(chatRoom, chatRoomId);
 
   const closeModals = () => {
     setModals(false);

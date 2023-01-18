@@ -67,6 +67,12 @@ export const hiddenIcons = (chatRoom: ChatProps, email: string) => {
   return chatRoom.hostUserEmail !== email;
 };
 
+export const selectedChatRoom = (chatRoom: ChatProps[], chatRoomId: string) => {
+  return (
+    chatRoom?.filter((chatRoom: ChatProps) => chatRoom.id === chatRoomId) || []
+  );
+};
+
 export const option = {
   snapshotListenOptions: { includeMetadataChanges: true },
 };
