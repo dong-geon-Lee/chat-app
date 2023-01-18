@@ -1,17 +1,9 @@
-import {
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-  serverTimestamp,
-  query,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { auth, db } from "../../config/firebase";
+import { X__ICONS } from "../../constants/constants";
 import { promptOverlayState, promptState } from "../../recoils/promptState";
 import {
   Bottom,
@@ -42,20 +34,20 @@ export default function Prompt() {
 
   const [user] = useAuthState(auth);
   const { uid, email } = user;
-  console.log(user);
 
   const closePrompt = () => {
     setPrompt(false);
     setPromptOverlay(false);
   };
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChatRoomName(e.target.value);
   };
 
   const AddChatRoom = async () => {
     try {
       const newChatRef = doc(collection(db, "chatRooms"));
+
       await setDoc(newChatRef, {
         id: newChatRef.id,
         chatRoomName,
@@ -68,7 +60,7 @@ export default function Prompt() {
       setChatRoomName("");
       closePrompt();
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   };
 
@@ -77,11 +69,7 @@ export default function Prompt() {
       <Wrapper>
         <Header>
           <Title>채널 만들기</Title>
-          <Img
-            src="https://user-images.githubusercontent.com/69576865/212525600-d0c566fe-3910-4bda-9c3a-c31b6b886f1b.svg"
-            alt="xIcons"
-            onClick={closePrompt}
-          />
+          <Img src={X__ICONS} alt="xIcons" onClick={closePrompt} />
         </Header>
 
         <Center>

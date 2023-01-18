@@ -7,15 +7,15 @@ import { useState } from "react";
 import { auth, db } from "../config/firebase";
 import { addDoc, collection } from "firebase/firestore";
 import {
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
+} from "react-firebase-hooks/auth";
+import {
   BACKGROUND__IMAGE,
   LOGIN__INPUT__ERROR,
   LOGIN__LITMIT__ERROR,
   LOGIN__PASSWORD__ERROR,
 } from "../constants/constants";
-import {
-  useCreateUserWithEmailAndPassword,
-  useUpdateProfile,
-} from "react-firebase-hooks/auth";
 import {
   AuthBox,
   Box,

@@ -2,14 +2,26 @@ import Image from "next/image";
 import { collection, deleteDoc, doc, orderBy, query } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
-import {
-  useCollection,
-  useCollectionData,
-} from "react-firebase-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useRecoilState } from "recoil";
 import { auth, db } from "../../config/firebase";
 import { modalState } from "../../recoils/modalState";
 import { promptOverlayState, promptState } from "../../recoils/promptState";
+import {
+  findChatRooms,
+  findCurUser,
+  findSharedRoom,
+  option,
+} from "../../helpers/utils";
+import {
+  ADD__USER__ICONS,
+  ARROW__ICONS,
+  AVATAR__ICONS,
+  HOME__ICONS,
+  LOGOUT__ICONS,
+  PLUS__ICONS,
+  REMOVE__ROOM__ICONS,
+} from "../../constants/constants";
 import {
   Box,
   ChatRoom,
@@ -36,35 +48,22 @@ export default function Sidebar() {
   const [user] = useAuthState(auth);
   const [signOut] = useSignOut(auth);
 
+  const authUserId = user?.uid;
+  const router = useRouter();
+
   const [, setModals] = useRecoilState(modalState);
   const [, setPrompt] = useRecoilState(promptState);
   const [, setOverlays] = useRecoilState(modalState);
   const [, setPromptOverlay] = useRecoilState(promptOverlayState);
 
-  const router = useRouter();
-  const id = router.query.id;
+  const [userLists] = useCollectionData(collection(db, "users"), option);
+  const [userInfo] = findCurUser(userLists, authUserId);
 
-  const option = {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  };
-
-  const [users] = useCollection(collection(db, "users"), option);
-
-  const authUserId = user?.uid;
-  const items = users?.docs.map((doc) => doc.data());
-  const findUser: any = items?.filter((x: any) => x.id === authUserId);
-  const [userInfo] = findUser || "";
-
-  const q = query(collection(db, `chatRooms`), orderBy("timestamp"));
-  const [chatRoomsItem]: any = useCollectionData(q);
-
-  const displayChatRooms = chatRoomsItem?.filter(
-    (chatRommItem: any) => chatRommItem?.hostUserId === userInfo?.id
-  );
-
-  const shareRoomItems = chatRoomsItem?.filter((x: any) =>
-    x.users?.includes(userInfo?.email)
-  );
+  const sortedQuery = query(collection(db, `chatRooms`), orderBy("timestamp"));
+  const [chatRoomsItems] = useCollectionData(sortedQuery);
+  const displayChatRooms = findChatRooms(chatRoomsItems, userInfo);
+  const shareRoomItems = findSharedRoom(chatRoomsItems, userInfo);
+  const allChatRooms = [...shareRoomItems, ...displayChatRooms];
 
   const handleHome = () => {
     router.push("/home");
@@ -99,7 +98,7 @@ export default function Sidebar() {
         <TextName>{userInfo?.name}</TextName>
         <IconBox>
           <Image
-            src="https://user-images.githubusercontent.com/69576865/212540134-ac8b8eb9-f38c-4b06-8aa7-5a949fc403db.svg"
+            src={HOME__ICONS}
             alt="home"
             width="26px"
             height="26px"
@@ -107,7 +106,7 @@ export default function Sidebar() {
             style={{ cursor: "pointer" }}
           />
           <Image
-            src="https://user-images.githubusercontent.com/69576865/212540226-681d536d-2c20-4e30-8dd5-3134ab23a1e4.svg"
+            src={LOGOUT__ICONS}
             alt="logout"
             width="26px"
             height="26px"
@@ -121,7 +120,7 @@ export default function Sidebar() {
         <Box>
           <Headline>
             <Image
-              src="https://user-images.githubusercontent.com/69576865/212309802-78baa647-6130-4f88-a170-d7b7659ffd96.svg"
+              src={ARROW__ICONS}
               alt="right-arrow"
               width="20px"
               height="20px"
@@ -129,7 +128,7 @@ export default function Sidebar() {
             <Text>Text Channels</Text>
           </Headline>
           <Image
-            src="https://user-images.githubusercontent.com/69576865/212322092-25b68461-6f11-441a-9ab5-acfe27b3a83a.svg"
+            src={PLUS__ICONS}
             alt="plus-icon"
             width="18px"
             height="18px"
@@ -139,7 +138,7 @@ export default function Sidebar() {
         </Box>
 
         <ContentBox>
-          {displayChatRooms?.map((chatItem: any) => (
+          {allChatRooms?.map((chatItem: any) => (
             <ChatRoom key={chatItem.id}>
               <Strong>#</Strong>
               <TextChat
@@ -149,38 +148,13 @@ export default function Sidebar() {
               </TextChat>
               <IconsBox>
                 <IconImg
-                  src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
+                  src={ADD__USER__ICONS}
                   alt="user-add-icon"
                   onClick={openModals}
                   hidden={chatItem.hostUserEmail !== user?.email}
                 />
                 <IconImg
-                  src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
-                  alt="chat-delete-icon"
-                  onClick={() => removeChatRoom(chatItem.id)}
-                  hidden={chatItem.hostUserEmail !== user?.email}
-                />
-              </IconsBox>
-            </ChatRoom>
-          ))}
-
-          {shareRoomItems?.map((chatItem: any) => (
-            <ChatRoom key={chatItem?.id}>
-              <Strong>#</Strong>
-              <TextChat
-                onClick={() => InChatRoom(chatItem.id, chatItem.chatRoomName)}
-              >
-                {chatItem?.chatRoomName}
-              </TextChat>
-              <IconsBox>
-                <IconImg
-                  src="https://user-images.githubusercontent.com/69576865/212469432-e628eed0-03ee-4a6e-963f-a22d535d1c99.svg"
-                  alt="user-add-icon"
-                  onClick={openModals}
-                  hidden={chatItem.hostUserEmail !== user?.email}
-                />
-                <IconImg
-                  src="https://user-images.githubusercontent.com/69576865/212463054-9ab9e6b8-ad21-4919-9197-581d6c75f5e6.svg"
+                  src={REMOVE__ROOM__ICONS}
                   alt="chat-delete-icon"
                   onClick={() => removeChatRoom(chatItem.id)}
                   hidden={chatItem.hostUserEmail !== user?.email}
@@ -192,13 +166,7 @@ export default function Sidebar() {
       </Main>
 
       <Footer>
-        <img
-          src={
-            user?.photoURL ||
-            "https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg"
-          }
-          alt="logo"
-        />
+        <img src={user?.photoURL || AVATAR__ICONS} alt="logo" />
         <UserInfo>
           <TextEmail>{userInfo?.email}</TextEmail>
           <TextBox>

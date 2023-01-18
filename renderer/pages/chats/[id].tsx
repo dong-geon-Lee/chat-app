@@ -11,12 +11,17 @@ import { promptState } from "../../recoils/promptState";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { findCurChatRoom, formattedDates, option } from "../../helpers/utils";
+import {
+  findCurChatRoom,
+  formattedDates,
+  generateId,
+  option,
+} from "../../helpers/utils";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
+  AVATAR__ICONS,
   BELL__ICONS,
   PIN__ICONS,
-  DEFAULT__AVATAR,
   USERS__ICONS,
 } from "../../constants/constants";
 import {
@@ -63,12 +68,12 @@ export default function Chats() {
 
   const router = useRouter();
   const id = router.query.id as string;
-  const orderedQuery = query(
+  const sortedQuery = query(
     collection(db, `chatRooms/${id}/messages`),
     orderBy("timestamp")
   );
 
-  const [messageItems] = useCollectionData(orderedQuery);
+  const [messageItems] = useCollectionData(sortedQuery);
   const [chatRooms] = useCollectionData(collection(db, "chatRooms"), option);
   const curChatRoom = findCurChatRoom(chatRooms, id);
 
@@ -81,6 +86,7 @@ export default function Chats() {
 
     setChatInput(chatInput);
     await addDoc(collection(db, "chatRooms", id, "messages"), {
+      id: generateId(id),
       name: authUser.displayName,
       email: authUser.email,
       message: chatInput,
@@ -167,7 +173,7 @@ export default function Chats() {
             {messageItems?.map((item) => (
               <ChatContentBox key={item.id}>
                 <Contents>
-                  <img src={item?.avatar || DEFAULT__AVATAR} alt="logo" />
+                  <img src={item?.avatar || AVATAR__ICONS} alt="logo" />
                   <ChatInfo>
                     <ChatDiv>
                       <ChatName>{item?.name}</ChatName>

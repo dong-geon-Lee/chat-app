@@ -1,11 +1,18 @@
 import { collection, doc, updateDoc } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useRecoilState } from "recoil";
 import { modalState, overlayState } from "../../recoils/modalState";
 import { auth, db } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { EXIST__CHATROOM__USER, X__ICONS } from "../../constants/constants";
+import {
+  existChatRoomUser,
+  findCurUser,
+  findOtherUsers,
+  option,
+} from "../../helpers/utils";
 import {
   AvatarBox,
   CloseX,
@@ -26,25 +33,18 @@ import {
 } from "./styles";
 
 export default function Modals() {
-  const [user] = useAuthState(auth);
   const [chatUsers, setChatUsers] = useState([]);
   const [, setModals] = useRecoilState(modalState);
   const [, setOverlays] = useRecoilState(overlayState);
 
-  const router = useRouter();
-  const chatRoomId: any = router.query.id;
-
-  const option = {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  };
-
-  const [users]: any = useCollection(collection(db, "users"), option);
-  const userLists = users?.docs.map((doc: any) => doc.data());
-
+  const [user] = useAuthState(auth);
   const authUserId = user?.uid;
-  const findUser: any = userLists?.filter((x: any) => x.id === authUserId);
-  const otehrUsers: any = userLists?.filter((x: any) => x.id !== authUserId);
-  const [userInfo] = findUser || "";
+  const [userLists] = useCollectionData(collection(db, "users"), option);
+  const [userInfo] = findCurUser(userLists, authUserId);
+  const otherUsers = findOtherUsers(userLists, authUserId);
+
+  const router = useRouter();
+  const chatRoomId = router.query.id as string;
 
   const closeModals = () => {
     setModals(false);
@@ -53,16 +53,20 @@ export default function Modals() {
 
   const addChatUser = async (addUserEmail: string, chatRoomId: string) => {
     try {
-      if (chatUsers.find((x) => x === addUserEmail)) return;
-      setChatUsers((prevState: any) => [...prevState, addUserEmail]);
+      if (existChatRoomUser(chatUsers, addUserEmail)) {
+        alert(EXIST__CHATROOM__USER);
+        return;
+      }
 
-      const chatRef = doc(db, "chatRooms", chatRoomId);
-      const list = [...chatUsers, addUserEmail];
-      await updateDoc(chatRef, {
-        users: list,
+      setChatUsers((prevState) => [...prevState, addUserEmail]);
+      const userLists = [...chatUsers, addUserEmail];
+
+      const chatRoomRef = doc(db, "chatRooms", chatRoomId);
+      await updateDoc(chatRoomRef, {
+        users: userLists,
       });
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
@@ -72,11 +76,7 @@ export default function Modals() {
         <HeaderInfo>
           <TextBox>
             <GroupTitle>친구를 {userInfo?.name} 그룹으로 초대하기</GroupTitle>
-            <CloseX
-              src="https://user-images.githubusercontent.com/69576865/212525600-d0c566fe-3910-4bda-9c3a-c31b6b886f1b.svg"
-              alt="xIcons"
-              onClick={closeModals}
-            />
+            <CloseX src={X__ICONS} alt="xIcons" onClick={closeModals} />
           </TextBox>
 
           <RoomHeader>
@@ -87,13 +87,10 @@ export default function Modals() {
       </Header>
 
       <UserWrapper>
-        {otehrUsers?.map((item: any) => (
+        {otherUsers?.map((item: any) => (
           <UserInfoBox key={item.id}>
             <AvatarBox>
-              <Img
-                src="https://user-images.githubusercontent.com/69576865/212329281-6180fd52-4cac-4f52-a3a7-6b66f395c340.svg"
-                alt="avatar-logo"
-              />
+              <Img src={item.avatar} alt="avatar-logo" />
               <UserName>{item.name}</UserName>
             </AvatarBox>
 

@@ -99,13 +99,13 @@ export const AvatarBox = styled.div`
 `;
 
 export const Img = styled.img`
-  width: 3.8rem;
-  height: 3.8rem;
+  width: 4.6rem;
+  height: 4.6rem;
   object-fit: cover;
   display: block;
-  background-color: #fff;
+  background-color: #fcfcfc;
   border-radius: 50%;
-  padding: 0.3rem;
+  padding: 0.1rem;
 `;
 
 export const UserName = styled.h1`
