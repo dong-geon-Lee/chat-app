@@ -7,6 +7,13 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ["user-images.githubusercontent.com"],
+    loader: "akamai",
+    path: "",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "user-images.githubusercontent.com",
+      },
+    ],
   },
 };
