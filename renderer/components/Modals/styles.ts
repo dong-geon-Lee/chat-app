@@ -16,7 +16,7 @@ export const Header = styled.div`
 `;
 
 export const HeaderInfo = styled.header`
-  padding: 2.4rem;
+  padding: 2.4rem 2.4rem 1.2rem 2.4rem;
 `;
 
 export const TextBox = styled.div`
@@ -44,7 +44,19 @@ export const CloseX = styled.img`
 export const RoomHeader = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.6rem;
+  margin: 2rem 0;
+`;
+
+export const RoomTextBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const Title = styled.h1`
+  color: #fff;
 `;
 
 export const Strong = styled.strong`
@@ -53,7 +65,7 @@ export const Strong = styled.strong`
 `;
 
 export const RoomText = styled.h1`
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 500;
   line-height: 2.5;
   color: #b9bbbe;

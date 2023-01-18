@@ -9,7 +9,7 @@ import { auth, db } from "../../config/firebase";
 import { modalState } from "../../recoils/modalState";
 import { promptState } from "../../recoils/promptState";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { MessageProps } from "../../@types/types";
@@ -59,6 +59,7 @@ import {
   ScrollLine,
   Small,
   Title,
+  ScrollBottom,
 } from "../../styles/chats";
 
 export default function Chats() {
@@ -66,6 +67,7 @@ export default function Chats() {
   const [authUser] = useAuthState(auth);
   const modals = useRecoilValue(modalState);
   const prompt = useRecoilValue(promptState);
+  const bottomMessage: any = useRef(null);
 
   const router = useRouter();
   const id = router.query.id as string;
@@ -97,6 +99,16 @@ export default function Chats() {
 
     setChatInput("");
   };
+
+  useEffect(() => {
+    setTimeout(
+      bottomMessage?.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      }),
+      10
+    );
+  }, [chatInput !== "" && chatInput !== " "]);
 
   return (
     <ChatBox>
@@ -185,6 +197,7 @@ export default function Chats() {
                     <ChatText>{item?.message}</ChatText>
                   </ChatInfo>
                 </Contents>
+                <ScrollBottom ref={bottomMessage}>{}</ScrollBottom>
               </ChatContentBox>
             ))}
           </ChatContainer>

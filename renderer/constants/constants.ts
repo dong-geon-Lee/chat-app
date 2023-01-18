@@ -38,7 +38,7 @@ export const LOGIN__CHECK__ERROR =
   "계정이 존재하지 않거나 잘못된 정보를 입력하였습니다";
 
 export const LOGIN__INPUT__ERROR = "이메일 또는 비밀번호를 입력하세요";
-export const LOGIN__PASSWORD__ERROR = "이메일 또는 비밀번호를 입력하세요";
+export const LOGIN__PASSWORD__ERROR = "비밀번호가 일치하지 않습니다";
 export const LOGIN__LITMIT__ERROR = "비밀번호는 6자리 이상 입력해주세요";
 export const EXIST__CHATROOM__USER = "이미 초대한 유저입니다";
 export const REMOVE__CHAT__ROOM = "삭제되었습니다";

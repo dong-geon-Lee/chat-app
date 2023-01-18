@@ -183,3 +183,5 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button``;
+
+export const ScrollBottom = styled.div``;

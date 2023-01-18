@@ -27,8 +27,10 @@ import {
   InviteText,
   RoomHeader,
   RoomText,
+  RoomTextBox,
   Strong,
   TextBox,
+  Title,
   UserInfoBox,
   UserName,
   UserWrapper,
@@ -85,8 +87,14 @@ export default function Modals() {
           </TextBox>
 
           <RoomHeader>
-            <Strong>#</Strong>
-            <RoomText>{router.query.chatRoom}</RoomText>
+            <RoomTextBox>
+              <Strong>#</Strong>
+              <RoomText>{router.query.chatRoom}</RoomText>
+            </RoomTextBox>
+            <Title>
+              참여 {chatRoomPath?.users.length}명 / 유저 목록{" "}
+              {otherUsers?.length}명
+            </Title>
           </RoomHeader>
         </HeaderInfo>
       </Header>
