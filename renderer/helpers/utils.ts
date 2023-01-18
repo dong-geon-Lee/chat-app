@@ -63,6 +63,10 @@ export const checkAuthUser = (
   );
 };
 
+export const hiddenIcons = (chatRoom: ChatProps, email: string) => {
+  return chatRoom.hostUserEmail !== email;
+};
+
 export const option = {
   snapshotListenOptions: { includeMetadataChanges: true },
 };

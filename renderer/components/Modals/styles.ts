@@ -87,7 +87,6 @@ export const UserInfoBox = styled.div`
   }
 
   &:hover div + div {
-    background-color: #0ead69;
     cursor: pointer;
   }
 `;
@@ -118,6 +117,7 @@ export const InviteBtn = styled.div`
   border: 1px solid #3aa55d;
   padding: 1rem 2.4rem;
   border-radius: 1rem;
+  background-color: ${(props: any) => props.active && "#0ead69"};
 `;
 
 export const InviteText = styled.p`

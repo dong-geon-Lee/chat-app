@@ -40,12 +40,16 @@ export default function Modals() {
 
   const [user] = useAuthState(auth);
   const authUserId = user?.uid;
+  const router = useRouter();
+  const chatRoomId = router.query.id as string;
+
   const [userLists] = useCollectionData(collection(db, "users"), option);
   const [userInfo] = findCurUser(userLists, authUserId);
   const otherUsers = findOtherUsers(userLists, authUserId);
 
-  const router = useRouter();
-  const chatRoomId = router.query.id as string;
+  const [chatRoom] = useCollectionData(collection(db, "chatRooms"), option);
+  const [chatRoomPath] =
+    chatRoom?.filter((chatRoom) => chatRoom.id === chatRoomId) || [];
 
   const closeModals = () => {
     setModals(false);
@@ -61,7 +65,6 @@ export default function Modals() {
 
       setChatUsers((prevState) => [...prevState, addUserEmail]);
       const userLists = [...chatUsers, addUserEmail];
-
       const chatRoomRef = doc(db, "chatRooms", chatRoomId);
       await updateDoc(chatRoomRef, {
         users: userLists,
@@ -95,7 +98,10 @@ export default function Modals() {
               <UserName>{item.name}</UserName>
             </AvatarBox>
 
-            <InviteBtn onClick={() => addChatUser(item.email, chatRoomId)}>
+            <InviteBtn
+              onClick={() => addChatUser(item.email, chatRoomId)}
+              active={chatRoomPath?.users.includes(item.email)}
+            >
               <InviteText>초대...</InviteText>
             </InviteBtn>
           </UserInfoBox>

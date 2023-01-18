@@ -12,6 +12,7 @@ import {
   findChatRooms,
   findCurUser,
   findSharedRoom,
+  hiddenIcons,
   option,
 } from "../../helpers/utils";
 import {
@@ -52,6 +53,7 @@ export default function Sidebar() {
   const [signOut] = useSignOut(auth);
 
   const authUserId = user?.uid;
+  const authUserEmail = user?.email;
   const router = useRouter();
 
   const [, setModals] = useRecoilState(modalState);
@@ -68,28 +70,21 @@ export default function Sidebar() {
   const shareRoomItems = findSharedRoom(chatRoomsItems, userInfo);
   const allChatRooms = [...shareRoomItems, ...displayChatRooms];
 
-  console.log(allChatRooms);
-
-  const handleHome = () => {
-    router.push("/home");
-  };
-
-  const handleLogout = () => {
-    router.push("/login");
-    signOut();
-  };
-
-  const openModals = () => {
-    setModals(true);
-    setOverlays(true);
+  const openModals = (chatRoomId: string, chatRoomName: string) => {
+    const { id, chatRoom } = router.query;
+    if (id === chatRoomId && chatRoom === chatRoomName) {
+      setModals(true);
+      setOverlays(true);
+    } else {
+      alert(ENTER__ROOM__FIRST);
+      return;
+    }
   };
 
   const openPrompt = () => {
     setPrompt(true);
     setPromptOverlay(true);
   };
-
-  console.log(router);
 
   const removeChatRoom = async (chatRoomId: string, chatRoomName: string) => {
     const { id, chatRoom } = router.query;
@@ -112,6 +107,15 @@ export default function Sidebar() {
 
   const InChatRoom = (id: string, chatRoom: string) => {
     router.push({ pathname: `/chats/${id}`, query: { id, chatRoom } });
+  };
+
+  const handleHome = () => {
+    router.push("/home");
+  };
+
+  const handleLogout = () => {
+    router.push("/login");
+    signOut();
   };
 
   return (
@@ -172,16 +176,16 @@ export default function Sidebar() {
                 <IconImg
                   src={ADD__USER__ICONS}
                   alt="user-add-icon"
-                  onClick={openModals}
-                  hidden={chatRoom.hostUserEmail !== user?.email}
+                  hidden={hiddenIcons(chatRoom, authUserEmail)}
+                  onClick={() => openModals(chatRoom.id, chatRoom.chatRoomName)}
                 />
                 <IconImg
                   src={REMOVE__ROOM__ICONS}
                   alt="chat-delete-icon"
+                  hidden={hiddenIcons(chatRoom, authUserEmail)}
                   onClick={() =>
                     removeChatRoom(chatRoom.id, chatRoom.chatRoomName)
                   }
-                  hidden={chatRoom.hostUserEmail !== user?.email}
                 />
               </IconsBox>
             </ChatRoom>

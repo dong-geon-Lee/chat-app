@@ -42,4 +42,4 @@ export const LOGIN__PASSWORD__ERROR = "이메일 또는 비밀번호를 입력�
 export const LOGIN__LITMIT__ERROR = "비밀번호는 6자리 이상 입력해주세요";
 export const EXIST__CHATROOM__USER = "이미 초대한 유저입니다";
 export const REMOVE__CHAT__ROOM = "삭제되었습니다";
-export const ENTER__ROOM__FIRST = "먼저 방에 입장하세요";
+export const ENTER__ROOM__FIRST = "먼저 클릭한 방으로 입장하세요";
