@@ -11,13 +11,14 @@ import { promptState } from "../../recoils/promptState";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { MessageProps } from "../../@types/types";
 import {
   findCurChatRoom,
   formattedDates,
   generateId,
   option,
 } from "../../helpers/utils";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
   AVATAR__ICONS,
   BELL__ICONS,
@@ -170,10 +171,10 @@ export default function Chats() {
               <Line />
             </DatesBox>
 
-            {messageItems?.map((item) => (
+            {messageItems?.map((item: MessageProps) => (
               <ChatContentBox key={item.id}>
                 <Contents>
-                  <img src={item?.avatar || AVATAR__ICONS} alt="logo" />
+                  <img src={item?.avatar || AVATAR__ICONS} alt="avatar" />
                   <ChatInfo>
                     <ChatDiv>
                       <ChatName>{item?.name}</ChatName>

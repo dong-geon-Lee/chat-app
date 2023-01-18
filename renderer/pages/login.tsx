@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Image from "next/image";
-import img from "../public/images/star.jpg";
 import Link from "next/link";
 import Spinner from "../components/Spinner/Spinner";
 import { useRouter } from "next/router";
@@ -9,7 +8,9 @@ import { auth, db } from "../config/firebase";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection } from "firebase/firestore";
+import { checkAuthUser } from "../helpers/utils";
 import {
+  BACKGROUND__IMAGE,
   LOGIN__CHECK__ERROR,
   LOGIN__INPUT__ERROR,
 } from "../constants/constants";
@@ -40,9 +41,7 @@ export default function Login() {
     useSignInWithEmailAndPassword(auth);
 
   const [users] = useCollectionData(collection(db, "users"));
-  const checkLogin = users?.find(
-    (user) => user.email === email && user.password === password
-  );
+  const checkLogin = checkAuthUser(users, email, password);
 
   const handleSignIn = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,12 +74,18 @@ export default function Login() {
   if (loading) return <Spinner />;
 
   return (
-    <Container priority>
+    <Container>
       <Head>
         <Title>Home page</Title>
       </Head>
 
-      <Image src={img} alt="back" objectFit="cover" layout="fill" priority />
+      <Image
+        src={BACKGROUND__IMAGE}
+        alt="back"
+        objectFit="cover"
+        layout="fill"
+        priority
+      />
       <Form onSubmit={handleSignIn}>
         <Text>돌아오신 것을 환영해요!</Text>
         <AuthBox>

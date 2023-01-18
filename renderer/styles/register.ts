@@ -6,7 +6,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("https://user-images.githubusercontent.com/69576865/212247453-68a59c52-4349-4964-a993-636b66724fb0.jpg");
+  position: relative;
 `;
 
 export const Title = styled.title``;

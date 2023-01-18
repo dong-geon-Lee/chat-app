@@ -15,3 +15,12 @@ export interface ChatProps {
   timestamp?: object;
   find?: Function;
 }
+
+export interface MessageProps {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  avatar: string;
+  timestamp: any;
+}

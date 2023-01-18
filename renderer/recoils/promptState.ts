@@ -1,11 +1,12 @@
 import { atom } from "recoil";
+import { generateId } from "../helpers/utils";
 
 export const promptState = atom({
-  key: "promptState",
+  key: generateId("promptState"),
   default: false,
 });
 
 export const promptOverlayState = atom({
-  key: "promptOverlayState",
+  key: generateId("promptOverlayState"),
   default: false,
 });

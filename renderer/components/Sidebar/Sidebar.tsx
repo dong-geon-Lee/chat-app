@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { auth, db } from "../../config/firebase";
 import { modalState } from "../../recoils/modalState";
 import { promptOverlayState, promptState } from "../../recoils/promptState";
+import { ChatProps } from "../../@types/types";
 import {
   findChatRooms,
   findCurUser,
@@ -17,9 +18,11 @@ import {
   ADD__USER__ICONS,
   ARROW__ICONS,
   AVATAR__ICONS,
+  ENTER__ROOM__FIRST,
   HOME__ICONS,
   LOGOUT__ICONS,
   PLUS__ICONS,
+  REMOVE__CHAT__ROOM,
   REMOVE__ROOM__ICONS,
 } from "../../constants/constants";
 import {
@@ -65,6 +68,8 @@ export default function Sidebar() {
   const shareRoomItems = findSharedRoom(chatRoomsItems, userInfo);
   const allChatRooms = [...shareRoomItems, ...displayChatRooms];
 
+  console.log(allChatRooms);
+
   const handleHome = () => {
     router.push("/home");
   };
@@ -84,8 +89,25 @@ export default function Sidebar() {
     setPromptOverlay(true);
   };
 
-  const removeChatRoom = async (id: string) => {
-    await deleteDoc(doc(db, "chatRooms", id));
+  console.log(router);
+
+  const removeChatRoom = async (chatRoomId: string, chatRoomName: string) => {
+    const { id, chatRoom } = router.query;
+
+    if (id === chatRoomId && chatRoom === chatRoomName) {
+      const choiceRoom = confirm(`[ ${chatRoomName} ] 채팅방을 삭제할까요?`);
+
+      if (choiceRoom) {
+        alert(REMOVE__CHAT__ROOM);
+        await deleteDoc(doc(db, "chatRooms", chatRoomId));
+        await deleteDoc(doc(db, "messages", chatRoomId));
+        router.push("/home");
+        return;
+      }
+    } else {
+      alert(ENTER__ROOM__FIRST);
+      return;
+    }
   };
 
   const InChatRoom = (id: string, chatRoom: string) => {
@@ -138,26 +160,28 @@ export default function Sidebar() {
         </Box>
 
         <ContentBox>
-          {allChatRooms?.map((chatItem: any) => (
-            <ChatRoom key={chatItem.id}>
+          {allChatRooms?.map((chatRoom: ChatProps) => (
+            <ChatRoom key={chatRoom.id}>
               <Strong>#</Strong>
               <TextChat
-                onClick={() => InChatRoom(chatItem.id, chatItem.chatRoomName)}
+                onClick={() => InChatRoom(chatRoom.id, chatRoom.chatRoomName)}
               >
-                {chatItem.chatRoomName}
+                {chatRoom.chatRoomName}
               </TextChat>
               <IconsBox>
                 <IconImg
                   src={ADD__USER__ICONS}
                   alt="user-add-icon"
                   onClick={openModals}
-                  hidden={chatItem.hostUserEmail !== user?.email}
+                  hidden={chatRoom.hostUserEmail !== user?.email}
                 />
                 <IconImg
                   src={REMOVE__ROOM__ICONS}
                   alt="chat-delete-icon"
-                  onClick={() => removeChatRoom(chatItem.id)}
-                  hidden={chatItem.hostUserEmail !== user?.email}
+                  onClick={() =>
+                    removeChatRoom(chatRoom.id, chatRoom.chatRoomName)
+                  }
+                  hidden={chatRoom.hostUserEmail !== user?.email}
                 />
               </IconsBox>
             </ChatRoom>
@@ -166,7 +190,7 @@ export default function Sidebar() {
       </Main>
 
       <Footer>
-        <img src={user?.photoURL || AVATAR__ICONS} alt="logo" />
+        <img src={userInfo?.avatar || AVATAR__ICONS} alt="logo" />
         <UserInfo>
           <TextEmail>{userInfo?.email}</TextEmail>
           <TextBox>

@@ -7,6 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { EXIST__CHATROOM__USER, X__ICONS } from "../../constants/constants";
+import { UserProps } from "../../@types/types";
 import {
   existChatRoomUser,
   findCurUser,
@@ -87,7 +88,7 @@ export default function Modals() {
       </Header>
 
       <UserWrapper>
-        {otherUsers?.map((item: any) => (
+        {otherUsers?.map((item: UserProps) => (
           <UserInfoBox key={item.id}>
             <AvatarBox>
               <Img src={item.avatar} alt="avatar-logo" />

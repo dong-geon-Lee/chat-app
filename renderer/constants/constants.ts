@@ -32,7 +32,7 @@ export const AVATAR__ICONS =
   "https://user-images.githubusercontent.com/69576865/212462529-ecc7efdc-c7d8-41ba-a315-50be16e9b6f9.svg";
 
 export const BACKGROUND__IMAGE =
-  "https://user-images.githubusercontent.com/69576865/212247453-68a59c52-4349-4964-a993-636b66724fb0.jpg";
+  "https://user-images.githubusercontent.com/69576865/213093066-bbe796a6-6cf0-443e-a2dd-8aca1dbaaf31.jpg";
 
 export const LOGIN__CHECK__ERROR =
   "계정이 존재하지 않거나 잘못된 정보를 입력하였습니다";
@@ -41,3 +41,5 @@ export const LOGIN__INPUT__ERROR = "이메일 또는 비밀번호를 입력하�
 export const LOGIN__PASSWORD__ERROR = "이메일 또는 비밀번호를 입력하세요";
 export const LOGIN__LITMIT__ERROR = "비밀번호는 6자리 이상 입력해주세요";
 export const EXIST__CHATROOM__USER = "이미 초대한 유저입니다";
+export const REMOVE__CHAT__ROOM = "삭제되었습니다";
+export const ENTER__ROOM__FIRST = "먼저 방에 입장하세요";

@@ -41,9 +41,9 @@ export default function Register() {
   const { name, email, avatar, password, password2 } = userInput;
   const router = useRouter();
 
+  const [updateProfile] = useUpdateProfile(auth);
   const [createUserWithEmailAndPassword, loading] =
     useCreateUserWithEmailAndPassword(auth);
-  const [updateProfile] = useUpdateProfile(auth);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,7 +94,7 @@ export default function Register() {
   if (loading) return <Spinner />;
 
   return (
-    <Container priority>
+    <Container>
       <Head>
         <Title>Home page</Title>
       </Head>

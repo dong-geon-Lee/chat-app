@@ -53,6 +53,16 @@ export const findSharedRoom = (chatRooms: ChatProps[], userInfo: UserProps) => {
   );
 };
 
+export const checkAuthUser = (
+  users: UserProps[],
+  email: string,
+  password: string
+) => {
+  return users?.find(
+    (user) => user.email === email && user.password === password
+  );
+};
+
 export const option = {
   snapshotListenOptions: { includeMetadataChanges: true },
 };
