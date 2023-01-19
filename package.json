@@ -1,4 +1,5 @@
 {
+  "homepage": "http://dong-geon-Lee.github.io/chat-app/",
   "private": true,
   "name": "my-nextron-app",
   "description": "My application description",
@@ -7,6 +8,8 @@
   "main": "app/background.js",
   "scripts": {
     "dev": "nextron",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -24,6 +27,7 @@
     "@types/react": "^18.0.26",
     "electron": "^21.3.3",
     "electron-builder": "^23.6.0",
+    "gh-pages": "^4.0.0",
     "next": "^12.3.4",
     "nextron": "^8.4.0",
     "react": "^18.2.0",
