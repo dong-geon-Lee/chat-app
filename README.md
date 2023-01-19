@@ -7,8 +7,8 @@
 
 ## :link: &nbsp; Guide
 > 첫번쨰: 레포지토리를 다운로드합니다.  
-> 두번쨰: 터미널에 npm install 을 수행합니다.   
-> 세번쨰: npm run dev 입력합니다.
+> 두번쨰: 터미널에 npm install 입력합니다.   
+> 세번쨰: 터미널에 npm run dev 입력합니다.
 
 <details>
 <summary>서버실행</summary>  
