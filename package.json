@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nextron",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps"
   },
