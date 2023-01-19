@@ -70,27 +70,27 @@
 </details>
 
 <details>
-<summary>장바구니 추가 & 제거</summary>  
+<summary>채팅방 생성 & 제거</summary>  
 <div markdown="1">
 </div>
 <img width="600" alt=""
- src="https://user-images.githubusercontent.com/69576865/210477930-4806f877-7a8d-4255-8ec5-a69c6d56226b.gif">
+ src="https://user-images.githubusercontent.com/69576865/213344261-53b6a9e0-b523-4e01-8aae-4d0fabc4285c.gif">
 </details>
 
 <details>
-<summary>좋아요 추가 & 제거</summary>  
+<summary>홈페이지 & 로그아웃</summary>  
 <div markdown="1">
 </div>
 <img width="600" alt=""
- src="https://user-images.githubusercontent.com/69576865/210478290-702bf118-b811-4150-b3dd-7de26acd9be4.gif">
+ src="https://user-images.githubusercontent.com/69576865/213344803-03608f7b-6cfe-4261-baa7-6091222d3bdb.gif">
 </details>
 
 <details>
-<summary>계좌선택 & 계좌충전</summary>  
+<summary>유효성 검사</summary>  
 <div markdown="1">
 </div>
 <img width="600" alt=""
- src="https://user-images.githubusercontent.com/69576865/210479541-2abc4fdf-0a56-4740-a286-f56cb903b6f7.gif">
+ src="https://user-images.githubusercontent.com/69576865/213346650-556f34aa-cb41-4596-a053-bea346a5b515.gif">
 </details> 
 
 <details>
