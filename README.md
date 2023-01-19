@@ -20,7 +20,7 @@
 <br/>  
 
 ## :alarm_clock: &nbsp; Period
- - 2022.01.11 - 2022.01.19 (9일)
+ - 2022.01.11 - 2022.01.19
 <br/>
 
 ## :seedling: &nbsp; Stack  
