@@ -70,7 +70,7 @@ export default function Register() {
         photoURL: avatar,
       });
 
-      const id = user.user.uid;
+      const id = user?.user?.uid;
       await addDoc(collection(db, "users"), {
         id,
         name,
