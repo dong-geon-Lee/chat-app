@@ -70,6 +70,14 @@
 </details>
 
 <details>
+<summary>초대하기</summary>  
+<div markdown="1">
+</div>
+<img width="600" alt=""
+ src="https://user-images.githubusercontent.com/69576865/213347422-3d1befa8-4e2c-4c0d-8406-28e9797b43df.gif">
+</details>
+
+<details>
 <summary>채팅방 생성 & 제거</summary>  
 <div markdown="1">
 </div>
@@ -91,14 +99,6 @@
 </div>
 <img width="600" alt=""
  src="https://user-images.githubusercontent.com/69576865/213346650-556f34aa-cb41-4596-a053-bea346a5b515.gif">
-</details> 
-
-<details>
-<summary>결제하기 & 결제내역</summary>  
-<div markdown="1">
-</div>
-<img width="600" alt=""
- src="https://user-images.githubusercontent.com/69576865/210479874-093b094a-6929-4c53-b0e3-2c9222212162.gif">
 </details> 
 </br>
 
