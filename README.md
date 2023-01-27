@@ -5,7 +5,7 @@
 1:1 채팅 및 그룹 채팅 기능을 제공합니다. 
 <br/>
 
-## :link: &nbsp; Guide
+## :link: &nbsp; Link
 > 첫번쨰: 레포지토리 다운 후, 터미널에 code . 입력합니다.  
 > 두번쨰: 터미널에 npm install 입력합니다.   
 > 세번쨰: 터미널에 npm run dev 입력합니다.
@@ -17,8 +17,11 @@
 <img width="600" alt=""
  src="https://user-images.githubusercontent.com/69576865/213350834-ae7c4406-9717-49ef-8901-c0ae77bdcdf3.gif">
 </details>
-<br/>  
-
+  
+https://deploy-pratice.firebaseapp.com
+<br/>
+<br/>
+  
 ## :alarm_clock: &nbsp; Period
  - 2022.01.11 - 2023.01.19
 <br/>
